@@ -1,0 +1,372 @@
+<title>Frontline 職業資料表</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --bg:#F3F4F7; --paper:#FFFFFF; --sunken:#ECEEF3; --line:#DBDEE6; --line2:#C3C8D3;
+  --ink:#171A21; --ink2:#4F5666; --ink3:#868D9C;
+  --accent:#2C55B8; --accent-soft:#E8EDFA;
+  --new:#C1352B; --ok:#2F7A4E; --ok-bg:#E8F4EC; --open:#9A6B10;
+  --shadow:0 1px 2px rgba(20,26,40,.05), 0 8px 22px -16px rgba(20,26,40,.3);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1218; --paper:#171B23; --sunken:#12161D; --line:#282E39; --line2:#39404E;
+    --ink:#E6EAF2; --ink2:#A2A9B9; --ink3:#727A8A;
+    --accent:#7FA3F0; --accent-soft:#1A2131;
+    --new:#F0796C; --ok:#63B487; --ok-bg:#152219; --open:#DDAE4A;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -18px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1218; --paper:#171B23; --sunken:#12161D; --line:#282E39; --line2:#39404E;
+  --ink:#E6EAF2; --ink2:#A2A9B9; --ink3:#727A8A;
+  --accent:#7FA3F0; --accent-soft:#1A2131;
+  --new:#F0796C; --ok:#63B487; --ok-bg:#152219; --open:#DDAE4A;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -18px rgba(0,0,0,.8);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;font-size:14px;line-height:1.6}
+.mono{font-family:"JetBrains Mono",ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 18px 60px}
+
+.bar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);
+  padding:12px 0;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.bar h1{margin:0;font-size:17px;font-weight:700;letter-spacing:.04em}
+.bar .sub{font-size:11px;color:var(--ink3);font-family:"JetBrains Mono",monospace}
+.bar .sp{flex:1}
+.status{font-size:12px;font-family:"JetBrains Mono",monospace;padding:3px 9px;border-radius:4px;
+  border:1px solid var(--line2);color:var(--ink3);white-space:nowrap}
+.status.ok{color:var(--ok);border-color:var(--ok);background:var(--ok-bg)}
+.status.busy{color:var(--open);border-color:var(--open)}
+.status.err{color:var(--new);border-color:var(--new)}
+.btn{border:1px solid var(--line2);background:var(--paper);border-radius:4px;padding:5px 11px;font-size:12.5px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--accent)}
+.btn.p{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+
+.rule{background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:4px;
+  padding:9px 13px;margin-bottom:16px;font-size:12.5px;color:var(--ink2)}
+.rule b{color:var(--accent)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:14px}
+@media (max-width:520px){.grid{grid-template-columns:1fr}}
+
+.job{background:var(--paper);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden}
+.jh{display:flex;align-items:center;gap:10px;padding:11px 14px 10px;background:var(--sunken);border-bottom:1px solid var(--line)}
+.jh .nameIn{font-size:17px;font-weight:700;border:none;background:transparent;color:var(--ink);
+  padding:2px 4px;border-radius:3px;width:6.5em;flex:0 0 auto}
+.jh .roleIn{font-size:11.5px;color:var(--ink2);border:1px solid var(--line2);background:var(--paper);
+  border-radius:3px;padding:1px 6px;width:6em}
+.jh .del{margin-left:auto;border:none;background:none;color:var(--ink3);cursor:pointer;font-size:15px;
+  padding:3px 6px;border-radius:3px}
+.jh .del:hover{color:var(--new);background:color-mix(in srgb,var(--new) 14%,transparent)}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr) 1.5fr;gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.stat{background:var(--paper);padding:7px 10px;text-align:center}
+.stat label{display:block;font-size:9.5px;letter-spacing:.14em;color:var(--ink3);font-weight:700;margin-bottom:1px}
+.stat input{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:17px;text-align:center;
+  border:none;background:transparent;color:var(--ink);width:100%;padding:0;border-radius:3px}
+.stat.derived{background:var(--sunken);display:flex;flex-direction:column;justify-content:center}
+.stat.derived .d{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink2);line-height:1.45}
+.stat.derived .d b{color:var(--ink);font-size:14px}
+
+.blk{padding:11px 14px;border-bottom:1px dashed var(--line)}
+.blk:last-child{border-bottom:none}
+.blk .bh{display:flex;align-items:center;gap:9px;margin-bottom:5px}
+.blk .tag{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.12em;font-weight:700;
+  color:var(--ink3);border:1px solid var(--line2);border-radius:3px;padding:1px 6px;flex:0 0 auto}
+.blk.lb .tag{color:var(--accent);border-color:var(--accent)}
+.blk .skName{font-size:14.5px;font-weight:700;border:none;background:transparent;color:var(--ink);
+  padding:2px 4px;border-radius:3px;flex:1;min-width:0}
+.blk textarea{width:100%;font:inherit;font-size:12.5px;line-height:1.6;color:var(--ink2);
+  border:1px solid transparent;background:transparent;border-radius:4px;padding:4px 5px;resize:vertical;min-height:52px}
+.blk textarea:hover{border-color:var(--line)}
+.lbmeta{display:flex;gap:10px;align-items:center;margin-left:auto;flex:0 0 auto}
+.lbmeta span{font-size:10px;color:var(--ink3)}
+.lbmeta input{width:40px;font-family:"JetBrains Mono",monospace;font-weight:700;font-size:12px;text-align:center;
+  border:1px solid var(--line2);background:var(--paper);color:var(--ink);border-radius:3px;padding:1px 2px}
+.uses{font-size:11px;color:var(--ink3);margin-top:3px;font-family:"JetBrains Mono",monospace}
+.blk.note{background:var(--sunken)}
+.blk.note textarea{min-height:70px;font-size:12px}
+
+input:focus,textarea:focus{outline:none;background:var(--accent-soft);box-shadow:0 0 0 1px var(--accent)}
+
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);margin-top:18px;overflow:hidden}
+.panel > h2{margin:0;padding:9px 14px;font-size:11px;letter-spacing:.13em;color:var(--ink3);border-bottom:1px solid var(--line);font-weight:700}
+.panel .in{padding:13px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:center}
+th{background:var(--sunken);color:var(--ink2);font-size:11px;font-weight:700}
+th.l,td.l{text-align:left;white-space:nowrap}
+td.k1{background:color-mix(in srgb,var(--new) 17%,transparent);font-weight:700}
+td.k2{background:color-mix(in srgb,var(--open) 15%,transparent)}
+.legend{font-size:11.5px;color:var(--ink3);margin-top:9px}
+.skel{padding:50px 20px;text-align:center;color:var(--ink3);font-size:13px}
+details{margin-top:14px}
+summary{cursor:pointer;font-size:12.5px;color:var(--ink2)}
+#json{width:100%;min-height:160px;font-family:"JetBrains Mono",monospace;font-size:11px;margin-top:8px;
+  border:1px solid var(--line2);border-radius:4px;padding:9px;background:var(--paper);color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <div class="bar">
+    <div>
+      <h1>職業資料表</h1>
+      <div class="sub">FRONTLINE · 6 職業 × 2 技能 + LB</div>
+    </div>
+    <div class="sp"></div>
+    <span class="status" id="status">讀取中…</span>
+    <button class="btn" id="addBtn">＋ 新增職業</button>
+    <button class="btn" id="copyBtn">複製 JSON</button>
+    <button class="btn p" id="saveBtn">儲存</button>
+  </div>
+
+  <div class="rule">
+    <b>傷害基準：</b>單體傷害技能 ＝ ATK　／　範圍傷害技能 ＝ ATK − 100　／　LB 不受此規則約束。
+    技能敘述寫「造成單體傷害／範圍傷害」就好，數字由 ATK 自動推出。
+  </div>
+
+  <div class="grid" id="grid"><div class="skel">讀取中…</div></div>
+
+  <div class="panel">
+    <h2>平衡速查 · 幾張單體技能能殺死對方</h2>
+    <div class="in">
+      <table id="matrix"></table>
+      <div class="legend">
+        橫列＝攻擊者（單體傷害 ＝ ATK），直行＝被打的人。括號內是對方喝一次水（＋200 HP）之後的張數。
+        <span style="color:var(--new)">紅底＝兩張以內就死</span>、<span style="color:var(--open)">黃底＝三張</span>。一輪只有 5 個回合。
+      </div>
+    </div>
+  </div>
+
+  <details>
+    <summary>JSON</summary>
+    <textarea id="json" readonly></textarea>
+  </details>
+</div>
+
+<script>
+"use strict";
+
+const SEED = [
+  {id:"pld", name:"騎士", role:"坦克", hp:600, atk:150, mov:2,
+   lb:{name:"列陣", round:3, cd:99,
+       desc:"對範圍 1 的所有敵人造成 200 點傷害，本回合及接下來一回合進入無敵狀態。受攻擊一樣會被打斷「佔領」行動。"},
+   ska:{name:"衛護",
+        desc:"距離 2，位移至目標隊友該格，並替他承受本回合及接下來一回合受到的所有傷害、控制。即便攻擊轉移了，目標被攻擊依然會被打斷「佔領」行動。"},
+   skb:{name:"調停",
+        desc:"距離 2，恢復自身 50 點 HP，位移至目標敵人該格，造成單體傷害，並暈眩一回合。"},
+   note:"衛護是全場唯一的傷害轉移。承受期間騎士死亡則轉移立即停止。如果既開LB無敵又去保護隊友，或者保了隊友之後自己開防禦，則兩人都不會受傷。騎士做為全遊戲中血量最高，又有無敵的職業，如果不加以限制，他將變成戰場中最隨心所欲的職業，同時還能保證隊友不死。但若前期投入太多資源擊火騎士，又可能會被騎士前期的防禦所拆火，與騎士的心理博弈便是在此，管也不是不管也不是。"},
+
+  {id:"war", name:"武士", role:"輸出", hp:550, atk:300, mov:3,
+   lb:{name:"斬鐵劍", round:4, cd:99,
+       desc:"距離 3，位移到該格，途經連線上所有敵人若上回合或這回合攻擊過自身，則直接秒殺。"},
+   ska:{name:"冰天",
+        desc:"距離 2，位移至目標敵人該格，並使範圍 1 內的所有敵人造成範圍傷害，並造成鎖足效果。"},
+   skb:{name:"天道雪月花",
+        desc:"距離 0，對單體目標造成單體傷害。"},
+   note:"需要「誰攻擊過我」的實體標記。武士具有高額的單體傷害和不錯的機體數值，同時斬鐵劍的存在更能讓敵人忌憚攻擊武士，所以武士在擁有LB後將能更肆無忌憚的做想做的事。但缺點是，如果沒有詩人的輔助，武士只能在第四回合後開斬，這麼晚的時間即便擊殺敵人，影響幅度也有限。"},
+
+  {id:"nin", name:"忍者", role:"收割", hp:500, atk:300, mov:4,
+   lb:{name:"星遁天誅", round:2, cd:3,
+       desc:"距離 2，位移到該格，若目標血量低於 50%，直接斬殺並在該回合突破行動限制，可繼續對範圍內的目標施放。若目標血量無低於 50%，則造成 200 點傷害。"},
+   ska:{name:"縮地",
+        desc:"距離 4，位移至該格，並進入隱遁狀態。隱遁狀態下無法被敵人指定，不會受到單體技能控制、傷害；但一樣會受範圍傷害、控制，並解除隱遁狀態。自身除「發呆」、「喝水」外的所有行動都會解除隱遁狀態。"},
+   skb:{name:"斷絕",
+        desc:"距離 1，隱遁狀態下方可施展。對目標造成單體傷害，並解除自身隱遁狀態。"},
+   note:"忍者技能靠手裏劍遠程消耗敵人，又能在時機成熟時開啟收割模式。LB的重置機制我有大改，你要注意。真正變成戰場的收割者。"},
+
+  {id:"brd", name:"吟遊詩人", role:"輔助", hp:450, atk:200, mov:4,
+   lb:{name:"英雄的幻想曲", round:2, cd:2,
+       desc:"使無限距離的一名隊友立即獲得 LB，並使自身及該名隊友這回合及下回合免疫控制，並減傷 50%。"},
+   ska:{name:"爆破箭",
+        desc:"距離 3，對該格造成範圍傷害，並擊退一格。"},
+   skb:{name:"默者的夜曲",
+        desc:"距離 3，對目標造成單體傷害，並沉默一回合。"},
+   note:"詩人將是非常強力的輔助職業，既能刷新lb(能重置 CD 99  部分職業lbcd99，就是要表明他永遠轉不好，除非靠這種重置lb的技能)，又有群體的擊退，可將敵人從爭奪點上擊退走，還有單體的沉默控制，頻繁的控制既能可以有效的輔助輸出手，"},
+
+  {id:"whm", name:"白魔導士", role:"治療", hp:400, atk:200, mov:3,
+   lb:{name:"滌罪之心", round:2, cd:2,
+       desc:"距離 5，對自身與該格子連線上所有敵人造成 250 點傷害，並暈眩 1 回合。"},
+   ska:{name:"自然的奇蹟",
+        desc:"距離 3，造成單體傷害，並將目標變成小動物，使目標無法行動一回合。"},
+   skb:{name:"大療傷",
+        desc:"距離 3，使自身或目標恢復 150 點 HP，並賦予 100 點護盾，該技能產生的護盾無法疊加。"},
+   note:"LB 的「連線」定義與軸線系統綁在一起，待地圖改版。白魔做為攻擊距離超遠的輸出，同時還有治療和套護盾的能力，幾乎可與所有職業配合，LB超大範圍的暈眩和傷害，可以配合任何輸出角色的單體技能抓死目標。"},
+
+  {id:"blm", name:"黑魔導士", role:"輸出", hp:350, atk:250, mov:2,
+   lb:{name:"靈魂共鳴", round:2, cd:0,
+       desc:"該輪剩餘期間持續有效：自身的單體技能距離 +2、傷害 +100，並改為對目標格上所有敵人造成範圍傷害。"},
+   ska:{name:"火焰",
+        desc:"距離 3，造成單體傷害。"},
+   skb:{name:"磁暴",
+        desc:"距離 0，對該格造成範圍傷害，並使自身獲得 250 點護盾。"},
+   note:"超遠程、超脆皮的砲塔，需要隊友保護。開了LB後，原本單體距離3傷害250的火焰，變成距離5傷害350的群體傷害。難點在怎麼保命，尋找最好的輸出位置和輸出時機，而不是一直無腦開炮。"}
+];
+
+const LKEY = "fltg-jobs-v3";
+let jobs = [], dbRef = null, ready = false, dirty = false, saveTimer = null;
+const el = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function normalize(j){
+  j = j && typeof j === "object" ? j : {};
+  const s = o => ({name:(o && o.name) || "", desc:(o && o.desc) || ""});
+  return {
+    id: j.id || ("job" + Math.random().toString(36).slice(2,8)),
+    name: j.name || "", role: j.role || "",
+    hp:+j.hp || 0, atk:+j.atk || 0, mov:+j.mov || 0,
+    ska:s(j.ska), skb:s(j.skb),
+    lb:{name:(j.lb&&j.lb.name)||"", round:+(j.lb&&j.lb.round)||1,
+        cd:(j.lb&&j.lb.cd)!==undefined?+j.lb.cd:0, desc:(j.lb&&j.lb.desc)||""},
+    note: j.note || ""
+  };
+}
+const setStatus=(t,c)=>{const s=el("status");s.textContent=t;s.className="status"+(c?" "+c:"")};
+const localSave=()=>{try{localStorage.setItem(LKEY,JSON.stringify({jobs,updatedAt:new Date().toISOString()}))}catch(e){}};
+const localLoad=()=>{try{const d=JSON.parse(localStorage.getItem(LKEY)||"null");
+  return d&&Array.isArray(d.jobs)&&d.jobs.length?d:null}catch(e){return null}};
+
+function lbUses(j){
+  const r=Math.max(1,j.lb.round), cd=j.lb.cd;
+  if(cd>=99) return "一場 1 次 · 第 "+r+" 輪起";
+  const out=[]; for(let x=r;x<=5;x+=Math.max(1,cd)) out.push(x);
+  return "整場 "+out.length+" 次 · 第 "+out.join("、")+" 輪";
+}
+
+function render(){
+  const g=el("grid");
+  if(!ready){ g.innerHTML='<div class="skel">讀取中…</div>'; return; }
+  g.innerHTML = jobs.map((j,i)=>`
+    <div class="job">
+      <div class="jh">
+        <input class="nameIn" data-i="${i}" data-k="name" value="${esc(j.name)}" placeholder="職業名">
+        <input class="roleIn" data-i="${i}" data-k="role" value="${esc(j.role)}" placeholder="定位">
+        <button class="del" data-del="${i}" title="刪除">✕</button>
+      </div>
+      <div class="stats">
+        <div class="stat"><label>HP</label><input class="num" type="number" data-i="${i}" data-k="hp" value="${j.hp}"></div>
+        <div class="stat"><label>ATK</label><input class="num" type="number" data-i="${i}" data-k="atk" value="${j.atk}"></div>
+        <div class="stat"><label>MOV</label><input class="num" type="number" data-i="${i}" data-k="mov" value="${j.mov}"></div>
+        <div class="stat derived" data-d="${i}"><div class="d">單體 <b>${j.atk}</b><br>範圍 <b>${Math.max(0,j.atk-100)}</b></div></div>
+      </div>
+      <div class="blk lb">
+        <div class="bh"><span class="tag">LB</span>
+          <input class="skName" data-i="${i}" data-k="lb.name" value="${esc(j.lb.name)}" placeholder="LB 名稱">
+          <div class="lbmeta">
+            <span>獲得輪</span><input type="number" class="num" min="1" max="5" data-i="${i}" data-k="lb.round" value="${j.lb.round}">
+            <span>CD</span><input type="number" class="num" min="0" data-i="${i}" data-k="lb.cd" value="${j.lb.cd}">
+          </div>
+        </div>
+        <textarea data-i="${i}" data-k="lb.desc" placeholder="LB 效果…">${esc(j.lb.desc)}</textarea>
+        <div class="uses" data-u="${i}">${lbUses(j)}</div>
+      </div>
+      <div class="blk">
+        <div class="bh"><span class="tag">SKLa ×3</span>
+          <input class="skName" data-i="${i}" data-k="ska.name" value="${esc(j.ska.name)}" placeholder="技能名稱"></div>
+        <textarea data-i="${i}" data-k="ska.desc" placeholder="距離 ?，效果…">${esc(j.ska.desc)}</textarea>
+      </div>
+      <div class="blk">
+        <div class="bh"><span class="tag">SKLb ×3</span>
+          <input class="skName" data-i="${i}" data-k="skb.name" value="${esc(j.skb.name)}" placeholder="技能名稱"></div>
+        <textarea data-i="${i}" data-k="skb.desc" placeholder="距離 ?，效果…">${esc(j.skb.desc)}</textarea>
+      </div>
+      <div class="blk note">
+        <div class="bh"><span class="tag">設計備註</span></div>
+        <textarea data-i="${i}" data-k="note" placeholder="這個職業要怎麼玩、為什麼這樣設計…">${esc(j.note)}</textarea>
+      </div>
+    </div>`).join("");
+
+  g.querySelectorAll("input,textarea").forEach(x=>x.addEventListener("input",onEdit));
+  g.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.del;
+    if(confirm("刪除「"+(jobs[i].name||"第 "+(i+1)+" 個")+"」？")){ jobs.splice(i,1); touch(); render(); }
+  });
+  refresh();
+}
+
+function refresh(){
+  jobs.forEach((j,i)=>{
+    const d=document.querySelector(`[data-d="${i}"] .d`);
+    if(d) d.innerHTML=`單體 <b>${j.atk}</b><br>範圍 <b>${Math.max(0,j.atk-100)}</b>`;
+    const u=document.querySelector(`[data-u="${i}"]`);
+    if(u) u.textContent=lbUses(j);
+  });
+  renderMatrix();
+  el("json").value=JSON.stringify({jobs},null,2);
+}
+function touch(){
+  localSave(); dirty=true; setStatus("已存本機 · 雲端未存","busy");
+  clearTimeout(saveTimer); saveTimer=setTimeout(save,1000);
+}
+function onEdit(e){
+  const i=+e.target.dataset.i, k=e.target.dataset.k;
+  let v=e.target.value;
+  if(e.target.classList.contains("num")) v = v===""?0:Number(v);
+  const p=k.split(".");
+  if(p.length===1) jobs[i][p[0]]=v; else jobs[i][p[0]][p[1]]=v;
+  refresh(); touch();
+}
+function renderMatrix(){
+  const t=el("matrix"), list=jobs.filter(j=>j.name||j.hp||j.atk);
+  if(!list.length){ t.innerHTML=""; return; }
+  let h="<thead><tr><th class='l'>攻擊者 ＼ 目標</th>"+
+    list.map(j=>`<th>${esc(j.name||"?")}<br><span class="mono" style="font-weight:400;color:var(--ink3)">${j.hp}</span></th>`).join("")+
+    "</tr></thead><tbody>";
+  list.forEach(a=>{
+    h+=`<tr><td class="l"><b>${esc(a.name||"?")}</b> <span class="mono" style="color:var(--ink3)">${a.atk}</span></td>`;
+    list.forEach(d=>{
+      if(a.id===d.id){ h+=`<td style="color:var(--ink3)">—</td>`; return; }
+      const dmg=Math.max(1,a.atk);
+      const n=Math.ceil(d.hp/dmg), nw=Math.ceil((d.hp+200)/dmg);
+      h+=`<td class="${n<=2?"k1":n===3?"k2":""} mono">${n}<span style="color:var(--ink3)">（${nw}）</span></td>`;
+    });
+    h+="</tr>";
+  });
+  t.innerHTML=h+"</tbody>";
+}
+async function save(){
+  if(!dbRef){ setStatus("離線 · 已存本機","busy"); return; }
+  setStatus("儲存中…","busy");
+  try{
+    await dbRef.set({jobs, updatedAt:new Date().toISOString()});
+    localSave(); dirty=false;
+    setStatus("已儲存 "+new Date().toLocaleTimeString("zh-TW",{hour:"2-digit",minute:"2-digit"}),"ok");
+  }catch(err){ setStatus("雲端失敗 · 本機已存（"+((err&&err.code)||"?")+"）","err"); }
+}
+el("saveBtn").onclick=save;
+el("addBtn").onclick=()=>{ jobs.push(normalize({})); touch(); render();
+  const c=document.querySelectorAll(".job"); const last=c[c.length-1];
+  if(last){ last.scrollIntoView({block:"center"}); last.querySelector("input").focus(); } };
+el("copyBtn").onclick=async()=>{
+  const text=JSON.stringify({jobs},null,2);
+  try{ await navigator.clipboard.writeText(text); setStatus("已複製","ok"); }
+  catch(e){ const ta=el("json"); ta.closest("details").open=true; ta.focus(); ta.select(); setStatus("請手動複製下方 JSON","busy"); }
+};
+window.addEventListener("beforeunload",e=>{ if(dirty){ e.preventDefault(); e.returnValue=""; } });
+
+(async()=>{
+  const db = window.claude && window.claude.use ? await window.claude.use("db") : null;
+  let cloud=null;
+  if(db){
+    dbRef=db.doc("design/jobs");
+    try{ const s=await dbRef.get(); cloud=s.exists?s.data():null; }catch(e){}
+  }
+  const local=localLoad();
+  const useLocal = local && (!cloud || !cloud.updatedAt || local.updatedAt > cloud.updatedAt);
+  const src = useLocal ? local : cloud;
+  if(src && Array.isArray(src.jobs) && src.jobs.length){
+    jobs = src.jobs.map(normalize);
+    ready=true; render();
+    setStatus(useLocal?"已從本機還原（比雲端新）· 請按儲存":"已載入 "+new Date(cloud.updatedAt).toLocaleString("zh-TW"), useLocal?"busy":"ok");
+  }else{
+    jobs = SEED.map(normalize);
+    ready=true; render();
+    setStatus(db?"尚無存檔 · 初始資料":"離線 · 初始資料", db?"":"err");
+  }
+})();
+</script>

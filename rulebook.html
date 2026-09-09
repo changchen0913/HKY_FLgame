@@ -1,0 +1,866 @@
+<title>Frontline 三方戰棋規則書</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --bg:#F4F5F7; --paper:#FFFFFF; --sunken:#EDEFF3; --line:#DCDFE6; --line2:#C4C9D4;
+  --ink:#171A21; --ink2:#4C5464; --ink3:#828A99;
+  --accent:#2C55B8; --accent-soft:#E9EEFA;
+  --fA:#CF3A38; --fB:#2477C4; --fC:#A8790A;
+  --open:#8E6410; --open-bg:#FBF3E0; --open-line:#DDC58C;
+  --shadow:0 1px 2px rgba(20,26,40,.05), 0 8px 22px -16px rgba(20,26,40,.28);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1218; --paper:#171B23; --sunken:#12161D; --line:#282E39; --line2:#3A4150;
+    --ink:#E6EAF2; --ink2:#A4ABBB; --ink3:#737B8B;
+    --accent:#7FA3F0; --accent-soft:#1A2131;
+    --fA:#F0716A; --fB:#57A6EA; --fC:#DCB63C;
+    --open:#DDAE4A; --open-bg:#272014; --open-line:#5E4C22;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -18px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1218; --paper:#171B23; --sunken:#12161D; --line:#282E39; --line2:#3A4150;
+  --ink:#E6EAF2; --ink2:#A4ABBB; --ink3:#737B8B;
+  --accent:#7FA3F0; --accent-soft:#1A2131;
+  --fA:#F0716A; --fB:#57A6EA; --fC:#DCB63C;
+  --open:#DDAE4A; --open-bg:#272014; --open-line:#5E4C22;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -18px rgba(0,0,0,.8);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;font-size:14px;line-height:1.62}
+.mono{font-family:"JetBrains Mono",ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1160px;margin:0 auto;padding:28px 20px 70px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.mast{border-bottom:3px double var(--ink);padding-bottom:18px;margin-bottom:22px}
+.mast .kick{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.26em;color:var(--ink3)}
+.mast h1{margin:6px 0 0;font-family:"Noto Serif TC",serif;font-size:36px;font-weight:700;letter-spacing:.02em}
+.mast .meta{margin-top:8px;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink2)}
+
+/* one-page summary */
+.tldr{background:var(--paper);border:1px solid var(--line2);border-radius:6px;box-shadow:var(--shadow);
+  padding:18px 20px;margin-bottom:26px}
+.tldr h2{margin:0 0 10px;font-size:12px;letter-spacing:.18em;color:var(--ink3);font-weight:700}
+.tldr .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.tldr .c > b{display:block;font-size:12px;color:var(--accent);letter-spacing:.06em;margin-bottom:2px}
+.tldr .c{font-size:13px;color:var(--ink2)}
+.tldr .flow{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-size:13px;color:var(--ink2)}
+.tldr .flow b{color:var(--ink)}
+
+.cols{display:grid;grid-template-columns:190px minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:920px){.cols{grid-template-columns:minmax(0,1fr)}}
+nav{position:sticky;top:14px;font-size:12.5px;line-height:1.5}
+@media (max-width:920px){nav{position:static;background:var(--paper);border:1px solid var(--line);
+  border-radius:6px;padding:14px;margin-bottom:20px}}
+nav h3{margin:0 0 6px;font-size:10px;letter-spacing:.18em;color:var(--ink3);font-weight:700}
+nav ol{list-style:none;margin:0 0 14px;padding:0}
+nav li{margin-bottom:2px}
+nav a{color:var(--ink2);text-decoration:none;display:block}
+nav a:hover{color:var(--accent)}
+nav a .n{font-family:"JetBrains Mono",monospace;color:var(--ink3);margin-right:6px;font-size:11px}
+
+.part{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;color:var(--ink3);
+  border-bottom:1px solid var(--line2);padding-bottom:6px;margin:32px 0 12px;font-weight:700}
+.part:first-of-type{margin-top:0}
+.sec{background:var(--paper);border:1px solid var(--line);border-radius:6px;margin-bottom:10px;
+  box-shadow:var(--shadow);overflow:hidden}
+.sec > h2{margin:0;padding:11px 17px;border-bottom:1px solid var(--line);background:var(--sunken);
+  display:flex;align-items:baseline;gap:11px;font-size:15.5px;font-family:"Noto Serif TC",serif;font-weight:700}
+.sec > h2 .n{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:700;color:var(--ink3);min-width:24px}
+.bd{padding:15px 17px;font-family:"Noto Serif TC",serif;font-size:13.5px;line-height:1.82}
+.bd > *:first-child{margin-top:0} .bd > *:last-child{margin-bottom:0}
+.bd p{margin:0 0 9px}
+.bd ul,.bd ol{margin:0 0 9px;padding-left:21px}
+.bd li{margin-bottom:3px}
+.bd h4{font-family:"Noto Sans TC",sans-serif;font-size:12px;letter-spacing:.07em;margin:15px 0 6px;
+  color:var(--ink2);font-weight:700}
+.kw{font-weight:700;color:var(--ink)}
+
+table{width:100%;border-collapse:collapse;font-family:"Noto Sans TC",sans-serif;font-size:12.5px;margin:0 0 10px}
+th,td{border:1px solid var(--line);padding:5px 9px;text-align:left;vertical-align:top}
+th{background:var(--sunken);font-weight:700;color:var(--ink2);font-size:11.5px;letter-spacing:.05em}
+td.c{text-align:center}
+.scroll{overflow-x:auto}
+
+.eg,.note{font-family:"Noto Sans TC",sans-serif;font-size:12.5px;border-radius:4px;padding:10px 13px;margin:11px 0}
+.eg{background:var(--sunken);border-left:3px solid var(--line2);color:var(--ink2)}
+.eg b{color:var(--ink)}
+.note{background:var(--accent-soft);border-left:3px solid var(--accent);color:var(--ink2)}
+.note b{color:var(--accent)}
+
+.seq{counter-reset:s;list-style:none;padding:0;margin:0 0 10px;font-family:"Noto Sans TC",sans-serif;font-size:13px}
+.seq > li{counter-increment:s;position:relative;padding:8px 0 8px 38px;border-bottom:1px dashed var(--line)}
+.seq > li:last-child{border-bottom:none}
+.seq > li::before{content:counter(s);position:absolute;left:0;top:8px;width:24px;height:24px;border-radius:50%;
+  background:var(--accent);color:#fff;font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center}
+.seq ul{margin:5px 0 0;padding-left:18px;font-size:12.5px;color:var(--ink2)}
+
+/* jobs */
+.job{border:1px solid var(--line2);border-radius:6px;margin-bottom:12px;overflow:hidden;font-family:"Noto Sans TC",sans-serif}
+.job .jh{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 14px;background:var(--sunken);border-bottom:1px solid var(--line)}
+.job .jn{font-weight:700;font-size:16px}
+.job .jr{font-size:11px;color:var(--ink3);border:1px solid var(--line2);border-radius:3px;padding:0 7px}
+.job .js{margin-left:auto;display:flex;gap:14px;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink3);flex-wrap:wrap}
+.job .js b{color:var(--ink);font-size:14px}
+.job .jb{padding:0}
+.job .sk{padding:9px 14px;border-bottom:1px dashed var(--line);font-size:12.5px}
+.job .sk:last-child{border-bottom:none}
+.job .sk .tag{display:inline-block;min-width:66px;font-family:"JetBrains Mono",monospace;font-size:10px;
+  letter-spacing:.1em;font-weight:700;color:var(--ink3);border:1px solid var(--line2);border-radius:3px;
+  padding:0 5px;margin-right:8px;text-align:center}
+.job .sk.lb .tag{color:var(--accent);border-color:var(--accent)}
+.job .sk .nm{font-weight:700}
+.job .sk .cd{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink3);margin-left:6px}
+.job .jn2{padding:9px 14px;background:var(--accent-soft);font-size:12.5px;color:var(--ink2);border-top:1px solid var(--line)}
+
+.open{background:var(--open-bg);border:1px solid var(--open-line)}
+.open > h2{background:color-mix(in srgb,var(--open) 14%,transparent)}
+.olist{font-family:"Noto Sans TC",sans-serif;font-size:13px}
+.olist .r{display:grid;grid-template-columns:26px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.olist .r:last-child{border-bottom:none}
+.olist .n2{font-family:"JetBrains Mono",monospace;font-weight:700;color:var(--open);font-size:12px}
+.olist b{display:block}
+.olist span{color:var(--ink2);font-size:12.5px}
+.gloss{font-family:"Noto Sans TC",sans-serif;font-size:12.5px}
+.gloss dt{font-weight:700;margin-top:9px}
+.gloss dd{margin:1px 0 0;color:var(--ink2)}
+</style>
+
+<div class="wrap">
+  <div class="mast">
+    <div class="kick">FRONTLINE</div>
+    <h1>三方戰棋 · 規則書</h1>
+    <div class="meta">版本 V4 ／ 3–12 人 ／ 一場約 5 輪</div>
+  </div>
+
+  <div class="tldr">
+    <h2>一頁速覽</h2>
+    <div class="g">
+      <div class="c"><b>這是什麼</b>三個陣營在三角形戰場上搶控制點的戰棋遊戲。分數來自控制據點，不是來自擊殺。</div>
+      <div class="c"><b>怎麼贏</b>總分先到 2000 立即獲勝；否則五輪結束時分數最高者勝。</div>
+      <div class="c"><b>核心機制</b>每一輪所有人同時、秘密排出 5 張行動卡，然後一張一張同步揭示、依序結算。</div>
+      <div class="c"><b>怎麼拿分</b>打出「佔領」卡並在該回合沒有被攻擊，就取得該據點；之後每輪自動計分，直到被別人搶走。</div>
+    </div>
+    <div class="flow">
+      <b>一場</b> ＝ 5 <b>輪</b>　·　<b>一輪</b> ＝ 5 <b>回合</b>　·　<b>一回合</b> ＝ 每人執行 1 張行動卡<br>
+      <b>一輪的流程：</b>重生與 LB 更新 → 秘密排 5 張卡 → 逐回合揭示結算 → 據點計分 → 收回全部行動卡
+    </div>
+  </div>
+
+  <div class="cols">
+    <nav>
+      <h3>目錄</h3>
+      <ol>
+        <li><a href="#s1"><span class="n mono">1</span>遊戲概述</a></li>
+        <li><a href="#s2"><span class="n mono">2</span>術語</a></li>
+        <li><a href="#s3"><span class="n mono">3</span>人數與陣營</a></li>
+        <li><a href="#s4"><span class="n mono">4</span>配件</a></li>
+        <li><a href="#s5"><span class="n mono">5</span>遊戲準備</a></li>
+      </ol>
+      <ol>
+        <li><a href="#s6"><span class="n mono">6</span>地圖</a></li>
+        <li><a href="#s7"><span class="n mono">7</span>控制點</a></li>
+        <li><a href="#s8"><span class="n mono">8</span>中央核心</a></li>
+        <li><a href="#s9"><span class="n mono">9</span>出生點與普通空間</a></li>
+      </ol>
+      <ol>
+        <li><a href="#s10"><span class="n mono">10</span>一輪的流程</a></li>
+        <li><a href="#s11"><span class="n mono">11</span>行動順序</a></li>
+        <li><a href="#s12"><span class="n mono">12</span>編程與揭示</a></li>
+        <li><a href="#s13"><span class="n mono">13</span>一回合的結算</a></li>
+      </ol>
+      <ol>
+        <li><a href="#s14"><span class="n mono">14</span>行動卡總表</a></li>
+        <li><a href="#s15"><span class="n mono">15</span>移動</a></li>
+        <li><a href="#s16"><span class="n mono">16</span>發呆</a></li>
+        <li><a href="#s17"><span class="n mono">17</span>防禦</a></li>
+        <li><a href="#s18"><span class="n mono">18</span>喝水</a></li>
+        <li><a href="#s19"><span class="n mono">19</span>佔領</a></li>
+        <li><a href="#s20"><span class="n mono">20</span>角色技能</a></li>
+        <li><a href="#s21"><span class="n mono">21</span>極限爆發</a></li>
+      </ol>
+      <ol>
+        <li><a href="#s22"><span class="n mono">22</span>距離與範圍</a></li>
+        <li><a href="#s23"><span class="n mono">23</span>傷害與護盾</a></li>
+        <li><a href="#s24"><span class="n mono">24</span>控制效果</a></li>
+        <li><a href="#s25"><span class="n mono">25</span>隱遁</a></li>
+        <li><a href="#s26"><span class="n mono">26</span>防護的兩個層級</a></li>
+        <li><a href="#s27"><span class="n mono">27</span>死亡與重生</a></li>
+      </ol>
+      <ol>
+        <li><a href="#s28"><span class="n mono">28</span>計分</a></li>
+        <li><a href="#s29"><span class="n mono">29</span>勝負判定</a></li>
+        <li><a href="#s30"><span class="n mono">30</span>六個職業</a></li>
+      </ol>
+      <ol>
+        <li><a href="#a"><span class="n mono">A</span>結算速查</a></li>
+        <li><a href="#b"><span class="n mono">B</span>名詞索引</a></li>
+        <li><a href="#c"><span class="n mono">C</span>指示物清單</a></li>
+        <li><a href="#d"><span class="n mono">D</span>尚未定案</a></li>
+      </ol>
+    </nav>
+
+    <main>
+
+<div class="part">第一部　基礎</div>
+
+<section class="sec" id="s1">
+  <h2><span class="n">1</span>遊戲概述</h2>
+  <div class="bd">
+    <p>本遊戲是一款<span class="kw">三方陣營對戰</span>的戰棋遊戲。三個陣營（A／B／C）在同一張三角形地圖上，爭奪散布其中的控制點。</p>
+    <p>分數的主要來源是<span class="kw">控制據點</span>，不是擊殺。擊殺可以得分，但真正穩定的高分來自持續掌握戰場。</p>
+    <p>每一輪，所有玩家<span class="kw">同時且秘密地</span>替自己的角色排出 5 張行動卡，決定這一輪要做什麼、以及照什麼順序做。排定後不可更改。接著所有人一起翻開第 1 張、結算，再翻第 2 張、結算，直到第 5 張。因此遊戲的核心不是「我要打誰」，而是<span class="kw">預測對手會在第幾個回合做什麼</span>。</p>
+  </div>
+</section>
+
+<section class="sec" id="s2">
+  <h2><span class="n">2</span>術語</h2>
+  <div class="bd">
+    <div class="scroll"><table>
+      <thead><tr><th style="width:80px">名詞</th><th style="width:90px">數量</th><th>意義</th></tr></thead>
+      <tbody>
+        <tr><td><b>場</b></td><td class="c mono">1</td><td>一整局遊戲。</td></tr>
+        <tr><td><b>輪</b></td><td class="c mono">5 ／場</td><td>大回合。每一輪開始時所有玩家秘密排出 5 張行動卡。</td></tr>
+        <tr><td><b>回合</b></td><td class="c mono">5 ／輪</td><td>行動卡的槽位。每個回合所有角色各執行 1 張卡。</td></tr>
+        <tr><td><b>格</b></td><td class="c mono">19 ／圖</td><td>地圖上的一個空間。</td></tr>
+      </tbody>
+    </table></div>
+    <p>一個角色一場最多執行 <span class="kw">25 張</span>行動卡。技能敘述中寫「回合」一律指行動卡的槽位，寫「輪」才是大回合。</p>
+  </div>
+</section>
+
+<section class="sec" id="s3">
+  <h2><span class="n">3</span>人數與陣營</h2>
+  <div class="bd">
+    <p>固定分為 3 個陣營。玩家人數只能為 3、6、9、12 人。</p>
+    <div class="scroll"><table>
+      <thead><tr><th>玩家人數</th><th>每陣營玩家數</th><th>每位玩家控制</th><th>戰場總棋子數</th></tr></thead>
+      <tbody>
+        <tr><td class="c mono">3</td><td class="c">1 人</td><td class="c">2 個角色</td><td class="c mono">6</td></tr>
+        <tr><td class="c mono">6</td><td class="c">2 人</td><td class="c">1 個角色</td><td class="c mono">6</td></tr>
+        <tr><td class="c mono">9</td><td class="c">3 人</td><td class="c">1 個角色</td><td class="c mono">9</td></tr>
+        <tr><td class="c mono">12</td><td class="c">4 人</td><td class="c">1 個角色</td><td class="c mono">12</td></tr>
+      </tbody>
+    </table></div>
+    <p>角色以陣營字母加編號稱呼：A1、A2、B1、B2……</p>
+    <h4>3 人局</h4>
+    <p>每位玩家同時控制自己陣營的 2 個角色。兩個角色各自獨立擁有 HP、職業、LB 狀態與一整套行動卡，並分別依行動順序行動。</p>
+    <h4>友軍</h4>
+    <p>同陣營角色互為友軍：不會互相造成傷害或擊殺，可以互相治療、給予護盾、協同佔領據點。3 人局中同一名玩家控制的兩個角色也互為友軍。</p>
+  </div>
+</section>
+
+<section class="sec" id="s4">
+  <h2><span class="n">4</span>配件</h2>
+  <div class="bd">
+    <ul>
+      <li><span class="kw">地圖板</span> ×1 — 三角形戰場，19 格。</li>
+      <li><span class="kw">角色棋子</span> — 三色，每色最多 4 個。</li>
+      <li><span class="kw">角色卡</span> ×6 — 每個職業一張，正面印 HP／ATK／MOV，背面印該職業的兩個技能與 LB。</li>
+      <li><span class="kw">行動卡</span> — 每位角色一套 19 張（見 §14）。所有角色的行動卡是<span class="kw">同一種公版設計</span>，技能卡只印「SKLa」「SKLb」，實際效果看角色卡背面。</li>
+      <li><span class="kw">職業索引卡</span> — 雙面，列出全部 6 個職業的 2 技能與 LB，每位玩家一張。因為技能卡是公版，這張是判讀對手的依據。</li>
+      <li><span class="kw">據點歸屬標記</span> — 三色，放在 6 個控制點上。</li>
+      <li><span class="kw">狀態指示物</span> — 見附錄 C。</li>
+      <li><span class="kw">計分軌</span> — 三條，0～2000。</li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="s5">
+  <h2><span class="n">5</span>遊戲準備</h2>
+  <div class="bd">
+    <ol>
+      <li>依人數決定陣營與角色數（§3），每人拿取對應的棋子。</li>
+      <li>每個角色<span class="kw">選擇 1 個職業</span>，整場不變。取該職業的角色卡。</li>
+      <li>職業<span class="kw">不鎖定</span>——同一個職業可以被多個角色使用，選擇時不需要看別人選了什麼。</li>
+      <li>每個角色拿取一套 19 張行動卡。</li>
+      <li>所有角色棋子放在自己陣營的出生點。</li>
+      <li>6 個控制點皆為中立，不放歸屬標記。</li>
+      <li>三條計分軌歸零。</li>
+      <li>決定第 1 輪的起始陣營（任意方式），開始第 1 輪。</li>
+    </ol>
+  </div>
+</section>
+
+<div class="part">第二部　戰場</div>
+
+<section class="sec" id="s6">
+  <h2><span class="n">6</span>地圖</h2>
+  <div class="bd">
+    <p>地圖為三角形戰場，三個角落分別是三個陣營的出生點。全圖共 <span class="kw">19 格</span>：</p>
+    <ul>
+      <li>3 個出生點</li>
+      <li>7 個控制點 — 外圍 3、中層 3、中央核心 1</li>
+      <li>9 個普通空間</li>
+    </ul>
+    <p>格與格之間以連線相鄰。角色只能沿相鄰連線移動。</p>
+    <div class="eg"><b>目前的地圖距離：</b>出生點到自家中層據點 2 格、到外圍據點 2 格、到中央核心 4 格；出生點之間互距 4 格；最遠兩格相距約 6 格。三個陣營到中央核心是等距的。</div>
+  </div>
+</section>
+
+<section class="sec" id="s7">
+  <h2><span class="n">7</span>控制點</h2>
+  <div class="bd">
+    <p>6 個控制點（外圍 ×3、中層 ×3）各有一個歸屬狀態：中立、A 控制、B 控制、C 控制。</p>
+    <h4>取得</h4>
+    <p>歸屬<span class="kw">只能透過打出「佔領」卡並成功結算來改變</span>（§19）。單純站在控制點上不會改變任何事。</p>
+    <h4>保有</h4>
+    <p>一旦取得，歸屬<span class="kw">永久保留</span>，直到其他陣營成功佔領為止。控制方的角色離開、死亡，或敵方角色站上該格，都不影響歸屬，也不會讓該據點停止計分。</p>
+    <h4>分數</h4>
+    <p>每一輪結束時，外圍控制點各給控制方 <span class="mono">100</span> 分，中層控制點各給 <span class="mono">150</span> 分。</p>
+  </div>
+</section>
+
+<section class="sec" id="s8">
+  <h2><span class="n">8</span>中央核心</h2>
+  <div class="bd">
+    <p>中央核心<span class="kw">不使用佔領卡，也沒有歸屬狀態</span>。</p>
+    <p>每一輪結束時，計算站在中央核心上的各陣營角色<span class="kw">人數</span>：</p>
+    <ul>
+      <li>人數<span class="kw">最多</span>的陣營獲得 <span class="mono">250</span> 分。</li>
+      <li>人數相同（含無人）則<span class="kw">無人得分</span>。</li>
+    </ul>
+    <div class="eg"><b>範例：</b>輪末核心上有 A 兩人、B 兩人、C 一人 → A 與 B 並列最多，<b>無人得分</b>。若 C 在第 5 個回合殺掉一名 B，變成 A 2、B 1、C 1 → <b>A 得 250 分</b>。</div>
+    <div class="note"><b>擊殺在核心特別有價值：</b>核心是人數制，殺掉核心上的一個敵人就是直接改變 250 分的歸屬，這比擊殺本身的 100 分重要得多。</div>
+  </div>
+</section>
+
+<section class="sec" id="s9">
+  <h2><span class="n">9</span>出生點與普通空間</h2>
+  <div class="bd">
+    <p><span class="kw">出生點</span>是每個陣營固定的基地，也是死亡後重生的位置。不產生分數、不屬於控制點、不會被奪取。</p>
+    <p><span class="kw">普通空間</span>（9 格）沒有特殊效果，也不產生分數。用途是移動、追擊、脫離、拉開距離、調整戰鬥位置、前往控制點。</p>
+  </div>
+</section>
+
+<div class="part">第三部　流程</div>
+
+<section class="sec" id="s10">
+  <h2><span class="n">10</span>一輪的流程</h2>
+  <div class="bd">
+    <ol class="seq">
+      <li><b>輪開始</b>
+        <ul><li>重生上一輪陣亡的角色（§27）</li>
+          <li>更新每個角色的 LB 狀態：到達獲得輪次的取得 LB，冷卻中的檢查是否恢復（§21）</li>
+          <li>確定本輪行動順序（§11）</li></ul></li>
+      <li><b>編程</b> — 所有玩家秘密選出 5 張行動卡，蓋著由左至右排成一列。排定後不可更改（§12）。</li>
+      <li><b>第 1～5 回合</b> — 逐回合揭示並結算（§13）。</li>
+      <li><b>輪結束</b>
+        <ul><li>6 個控制點依歸屬計分（100／150）</li>
+          <li>中央核心依人數計分（250）</li>
+          <li>清除本輪的所有持續效果（含防禦、控制、護盾以外的暫時狀態）</li>
+          <li>所有人收回全部 19 張行動卡</li>
+          <li>檢查是否有陣營達到 2000 分</li></ul></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" id="s11">
+  <h2><span class="n">11</span>行動順序</h2>
+  <div class="bd">
+    <p>採用<span class="kw">交錯行動制</span>，避免同一陣營連續行動造成過大的先手優勢。每個回合之內，所有角色依這個順序執行自己的卡。</p>
+    <div class="scroll"><table>
+      <thead><tr><th style="width:70px">輪</th><th>順序</th></tr></thead>
+      <tbody>
+        <tr><td class="c mono">1</td><td class="mono">A1 → B1 → C1 → A2 → B2 → C2 …</td></tr>
+        <tr><td class="c mono">2</td><td class="mono">B1 → C1 → A1 → B2 → C2 → A2 …</td></tr>
+        <tr><td class="c mono">3</td><td class="mono">C1 → A1 → B1 → C2 → A2 → B2 …</td></tr>
+      </tbody>
+    </table></div>
+    <p>起始陣營每一輪向後輪替。9 人局與 12 人局同理：先讓三方各行動一次，再進行下一輪。</p>
+  </div>
+</section>
+
+<section class="sec" id="s12">
+  <h2><span class="n">12</span>編程與揭示</h2>
+  <div class="bd">
+    <ol>
+      <li>輪開始時，每位玩家從角色的 19 張行動卡中<span class="kw">選出 5 張</span>，蓋著由左至右排成一列。左起第 1 張對應第 1 個回合，依此類推。</li>
+      <li>排好之後<span class="kw">不能更改</span>，也不能中途調換順序。</li>
+      <li>所有人排完後，同時揭示<span class="kw">第 1 張</span>並結算；接著第 2 張、第 3 張……直到第 5 張。</li>
+      <li>輪結束時<span class="kw">收回全部行動卡</span>，下一輪可以重新自由選擇，包含本輪已經用過的卡。</li>
+    </ol>
+    <div class="note"><b>3 人局：</b>玩家要同時為自己的兩個角色各排一列 5 張。兩個角色的卡序可以互相配合。</div>
+  </div>
+</section>
+
+<section class="sec" id="s13">
+  <h2><span class="n">13</span>一回合的結算</h2>
+  <div class="bd">
+    <ol class="seq">
+      <li><b>同時揭示</b>該回合的卡。</li>
+      <li><b>喝水立即生效</b> — 不依行動順序，翻開就結算（§18）。</li>
+      <li><b>依行動順序執行其餘的卡</b> — 移動、角色技能、LB、防禦、發呆。<br>
+        <span style="color:var(--ink2);font-size:12.5px">「佔領」此時只是宣告，不結算。</span></li>
+      <li><b>結算佔領</b>（§19）
+        <ul><li>a. 逐一檢查打出佔領的角色：該回合是否被敵方技能或 LB 命中，或受到控制效果 → 是則該次佔領失敗</li>
+          <li>b. 剩餘的有效佔領，依據點分組</li>
+          <li>c. 同一個據點若有 2 個以上<b>不同陣營</b>的有效佔領 → 全部失敗</li>
+          <li>d. 只剩 1 個陣營（同陣營多人算一組）→ 該陣營取得控制權</li></ul></li>
+      <li><b>進入下一個回合。</b></li>
+    </ol>
+    <div class="note"><b>角色在回合中途死亡時，</b>他尚未揭示的行動卡直接作廢，不再揭示。</div>
+  </div>
+</section>
+
+<div class="part">第四部　行動卡</div>
+
+<section class="sec" id="s14">
+  <h2><span class="n">14</span>行動卡總表</h2>
+  <div class="bd">
+    <p>每個角色擁有一組 <span class="kw">19 張</span>行動卡，每一輪從中選 5 張。</p>
+    <div class="scroll"><table>
+      <thead><tr><th style="width:110px">卡</th><th style="width:56px">張數</th><th>效果</th></tr></thead>
+      <tbody>
+        <tr><td><b>角色技能 A</b></td><td class="c mono">3</td><td>該職業的第一個技能（§20）</td></tr>
+        <tr><td><b>角色技能 B</b></td><td class="c mono">3</td><td>該職業的第二個技能（§20）</td></tr>
+        <tr><td><b>極限爆發</b></td><td class="c mono">1</td><td>該職業專屬的強力技能，需已獲得且不在冷卻中（§21）</td></tr>
+        <tr><td><b>移動</b></td><td class="c mono">3</td><td>移動 1～MOV 格（§15）</td></tr>
+        <tr><td><b>防禦</b></td><td class="c mono">1</td><td>免疫傷害與控制，需以發呆維持（§17）</td></tr>
+        <tr><td><b>喝水</b></td><td class="c mono">2</td><td>回復自身 200 HP，揭示後立即生效（§18）</td></tr>
+        <tr><td><b>發呆</b></td><td class="c mono">3</td><td>原地不動，什麼都不做（§16）</td></tr>
+        <tr><td><b>佔領</b></td><td class="c mono">3</td><td>嘗試取得所在控制點（§19）</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>技能卡有 6 張，但一輪只有 5 個回合。</b>所以「整輪全部拿來輸出」是打得出來的選擇，而且必定是 3+2 或 2+3——你每一輪都要決定哪一招多用一次。代價是那一輪沒有移動、沒有喝水、沒有防禦，位置鎖死且完全暴露。</div>
+  </div>
+</section>
+
+<section class="sec" id="s15">
+  <h2><span class="n">15</span>移動</h2>
+  <div class="bd">
+    <p>沿相鄰連線移動 <span class="mono">1～MOV</span> 格。移動卡至少要移動 1 格；想原地不動請用發呆。</p>
+  </div>
+</section>
+
+<section class="sec" id="s16">
+  <h2><span class="n">16</span>發呆</h2>
+  <div class="bd">
+    <p>該回合留在原地，不做任何事。主要用途是<span class="kw">維持防禦</span>（§17），以及在編程時作為虛招。</p>
+  </div>
+</section>
+
+<section class="sec" id="s17">
+  <h2><span class="n">17</span>防禦</h2>
+  <div class="bd">
+    <p>打出防禦的角色，從<span class="kw">該回合起、含之後 2 個回合</span>（最多 3 個回合）免疫傷害與控制效果。</p>
+    <h4>維持</h4>
+    <p>防禦的下一個回合若打出<span class="kw">發呆以外</span>的任何卡，防禦效果<span class="kw">在該回合開始前就結束</span>——你行動的那個回合已經沒有保護了。</p>
+    <div class="eg"><b>範例一：</b>第 3 回合打防禦、第 4 回合打佔領。第 3 回合免疫；<b>第 4 回合沒有保護</b>，佔領可以被打斷。<br>
+      <b>範例二：</b>第 1 回合防禦 → 第 2 回合發呆 → 第 3 回合發呆。這 3 個回合完全免疫，但你什麼都沒做，等於用 3 個回合換掉一次死亡。</div>
+    <h4>限制</h4>
+    <ul>
+      <li>防禦<span class="kw">擋不住</span>忍者的即死與武士的秒殺（§26）。</li>
+      <li>防禦<span class="kw">不保護佔領</span>：被攻擊仍然會打斷佔領（§19）。</li>
+      <li>防禦在<span class="kw">輪結束時失效</span>，不跨輪。</li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="s18">
+  <h2><span class="n">18</span>喝水</h2>
+  <div class="bd">
+    <p>回復自身 <span class="kw">固定 200 點 HP</span>（所有職業相同，與最大 HP 無關），不可超過最大 HP。</p>
+    <p><span class="kw">揭示後立即生效</span>，不依行動順序，也不必等待其他人執行完畢。</p>
+    <div class="note"><b>為什麼要立即生效：</b>避免「排在順序後面的角色，還沒輪到就先被打死」這種純粹由座位決定的死法。</div>
+  </div>
+</section>
+
+<section class="sec" id="s19">
+  <h2><span class="n">19</span>佔領</h2>
+  <div class="bd">
+    <p>嘗試取得所在控制點的控制權。這是本遊戲<span class="kw">唯一</span>能改變據點歸屬的方式。</p>
+    <h4>無效的情況（視同發呆）</h4>
+    <ul>
+      <li>角色不在控制點上。</li>
+      <li>該控制點<span class="kw">原本就歸屬自己陣營</span>。</li>
+      <li>角色在中央核心上（核心不使用佔領，§8）。</li>
+    </ul>
+    <h4>成功條件</h4>
+    <p>該回合所有人的行動執行完畢後，若打出佔領的角色<span class="kw">該回合未被任何敵方技能或 LB 命中，且未受到控制效果</span>，佔領成功。無論該據點原本歸屬哪一方，控制權立即轉移。</p>
+    <div class="note"><b>判定看「有沒有被打到」，不看「有沒有掉血」。</b>只扣到護盾算打斷、0 傷害算打斷、被防禦或無敵免疫掉的攻擊<b>也算</b>打斷。控制效果即使不造成傷害，同樣能打斷。</div>
+    <h4>細則</h4>
+    <ul>
+      <li><span class="kw">只看該回合</span>。前面幾個回合挨的打不影響本回合的佔領。</li>
+      <li>同一回合、同一據點，若有 2 個以上<span class="kw">不同陣營</span>的有效佔領 → <span class="kw">全部失敗</span>。</li>
+      <li>同陣營多名角色同時佔領同一據點，視為一組；只要其中一人有效，該陣營即取得。</li>
+    </ul>
+    <div class="eg"><b>三方互卡：</b>因為擁有者不能對自己的據點打佔領，「全部失敗」只會發生在<b>兩個非擁有方同時搶第三方的據點</b>時。結果是 B 和 C 互相卡死，A 什麼都沒做就保住了據點。</div>
+    <div class="note"><b>佔領有 3 張是刻意的。</b>因為佔領永遠可以被打斷，3 張讓你可以在同一輪排在不同的回合反覆嘗試——例如第 1、3、5 回合都排佔領。只要有一次沒被碰到就成功，而且一旦成功，後面那幾張自動變成發呆。防守方要完全封死，就必須把那 3 個回合全部蓋掉。</div>
+  </div>
+</section>
+
+<section class="sec" id="s20">
+  <h2><span class="n">20</span>角色技能</h2>
+  <div class="bd">
+    <p>每個職業有 <span class="kw">2 種</span>角色技能，各 <span class="kw">3 張</span>卡。兩種技能是實體不同的卡，排序時就決定要用哪一個，揭示時所有人都看得到是哪一招（但看不到效果，效果在角色卡背面與索引卡上）。</p>
+    <h4>目標的指定</h4>
+    <p><span class="kw">輪到自己行動時才自由指定目標。</span>排卡時只決定「用哪一招、排在第幾個回合」，不決定打誰。</p>
+    <p>若執行時<span class="kw">距離與範圍內沒有任何可指定的目標</span>，該張技能卡<span class="kw">視同發呆</span>。</p>
+    <h4>傷害</h4>
+    <p>技能的傷害由角色的 ATK 決定，不寫在敘述裡：</p>
+    <div class="scroll"><table>
+      <thead><tr><th style="width:170px">技能型態</th><th>傷害</th></tr></thead>
+      <tbody>
+        <tr><td><b>單體傷害技能</b></td><td class="mono">＝ ATK</td></tr>
+        <tr><td><b>範圍傷害技能</b></td><td class="mono">＝ ATK − 100</td></tr>
+        <tr><td><b>極限爆發</b></td><td>不受此規則約束，數值寫在該職業的 LB 上</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>所以你只需要記住對手的 ATK 一個數字。</b>技能卡是公版，翻開只知道是 SKLa 還是 SKLb；配上角色卡上公開的 ATK，就能算出他能打你多少。</div>
+  </div>
+</section>
+
+<section class="sec" id="s21">
+  <h2><span class="n">21</span>極限爆發（LB）</h2>
+  <div class="bd">
+    <p>每個角色有 1 張專屬的 LB 卡，永遠在那 19 張行動卡裡，但<span class="kw">只有在「已獲得且不在冷卻中」時才能打出</span>。</p>
+    <h4>獲得</h4>
+    <p>每個職業有固定的<span class="kw">獲得輪次</span>，到達該輪的輪開始時自動獲得。與傷害、擊殺、抽牌完全無關。獲得後若不使用，可以一直保留到後面的輪次。</p>
+    <h4>冷卻</h4>
+    <p><span class="kw">使用的那一輪 ＋ CD 輪數 ＝ 下次獲得的輪次。</span></p>
+    <div class="eg">白魔導士第 2 輪獲得 LB，若第 2 輪就用掉（CD 2 輪）→ <b>第 4 輪</b>再次獲得。<br>
+      忍者第 2 輪獲得，用掉後（CD 3 輪）→ <b>第 5 輪</b>再次獲得。<br>
+      <b>CD 99</b> ＝ 一場只能用一次。<b>CD 0</b> ＝ 每一輪都可以用。</div>
+    <h4>詩人的例外</h4>
+    <p>吟遊詩人的 LB 可以讓一名隊友<span class="kw">立即獲得 LB</span>，這包含<span class="kw">重置 CD 99</span>、以及<span class="kw">提前給出尚未到獲得輪次的 LB</span>。CD 99 的設計原意就是「自己永遠轉不好，除非靠詩人」。</p>
+    <div class="note"><b>LB 的獲得時程就是整場的節奏曲線。</b>第 1 輪全場沒有 LB（純部署）；第 2 輪四個職業同時解鎖；第 3 輪騎士的一次性大招上線；第 4 輪武士的斬鐵劍上線。</div>
+  </div>
+</section>
+
+<div class="part">第五部　戰鬥</div>
+
+<section class="sec" id="s22">
+  <h2><span class="n">22</span>距離與範圍</h2>
+  <div class="bd">
+    <p>兩者使用<span class="kw">同一套度量</span>——沿相鄰連線的最短步數。</p>
+    <ul>
+      <li><span class="kw">距離 N</span>：可以指定最短步數 ≤ N 的格。<span class="mono">距離 0</span> ＝ 只能指定自己所在的格。</li>
+      <li><span class="kw">範圍 N</span>：效果及於最短步數 ≤ N 的所有格。<span class="mono">範圍 0</span> ＝ 只有中心那一格；<span class="mono">範圍 1</span> ＝ 中心格 ＋ 所有相鄰格。</li>
+    </ul>
+    <p>差別只在語意：<span class="kw">距離</span>是「構得到多遠」，<span class="kw">範圍</span>是「構到之後打得多開」。一張卡可以同時有兩者——「距離 3、範圍 1」＝ 指定 3 步內的一格，該格與其所有相鄰格都受影響。</p>
+    <p><span class="kw">範圍的中心：</span>技能若指定目標格，以目標格為中心；若沒有指定目標，以施術者自己為中心。</p>
+    <p>敵我角色<span class="kw">可以站在同一格</span>。同一格上可以有任意數量的角色。</p>
+    <div class="note"><b>地圖的連線密度就是平衡槓桿。</b>範圍 1 會打到幾格，取決於中心那一格連出去幾條線。現有地圖上，出生點連 2 條（範圍 1 ＝ 3 格）、外圍控制點與中央核心連 3 條（4 格）、三個中層要塞與內圈三格連 4 條（<b>5 格</b>）。價值 150 的中層要塞剛好是全圖最容易被範圍技掃到的位置。</div>
+  </div>
+</section>
+
+<section class="sec" id="s23">
+  <h2><span class="n">23</span>傷害、護盾與擊殺</h2>
+  <div class="bd">
+    <p>傷害扣除目標的 HP。HP 降至 0 或以下時該角色<span class="kw">死亡</span>。</p>
+    <p>若角色具有護盾，傷害<span class="kw">優先扣除護盾</span>，再扣除 HP。</p>
+    <div class="eg">HP 400 / 護盾 100 的角色受到 250 傷害：護盾扣 100、HP 扣 150，結果 HP 250 / 護盾 0。</div>
+    <p>白魔導士「大療傷」產生的護盾<span class="kw">不可疊加</span>——一個角色身上最多只有一份。</p>
+  </div>
+</section>
+
+<section class="sec" id="s24">
+  <h2><span class="n">24</span>控制效果</h2>
+  <div class="bd">
+    <div class="scroll"><table>
+      <thead><tr><th style="width:80px">效果</th><th>作用</th></tr></thead>
+      <tbody>
+        <tr><td><b>暈眩</b></td><td><b>無法進行任何行動。</b>連移動、喝水、防禦、佔領都不行</td></tr>
+        <tr><td><b>沉默</b></td><td>無法使用 <b>LB 技能與角色技能</b>。移動、喝水、防禦、佔領仍可正常進行</td></tr>
+        <tr><td><b>變身</b></td><td>無法使用 <b>LB 技能與角色技能</b>。效果與沉默完全相同，兩個名詞是刻意保留的</td></tr>
+        <tr><td><b>鎖足</b></td><td><b>無法移動</b>；帶位移的技能<b>只能在原地使用</b>——技能本身照常生效，只是不會位移</td></tr>
+        <tr><td><b>擊退</b></td><td>使目標朝<b>相對方向移動一格</b>。可以把敵人從據點上推走</td></tr>
+      </tbody>
+    </table></div>
+    <p>控制效果即使不造成傷害，<span class="kw">也能打斷佔領</span>（§19）。</p>
+    <h4>持續時間怎麼數</h4>
+    <p><span class="kw">「被控制 N 個回合」＝ 輪到自己行動的機會被剝奪 N 次。</span>不是數絕對的回合編號，而是數自己的行動機會。</p>
+    <div class="eg"><b>情況一（我先動）：</b>順序是我 → B。第 3 回合我先行動完，B 接著暈我。我下一次的行動機會是第 4 回合 → <b>第 4 回合的卡被取消</b>。<br><br>
+      <b>情況二（B 先動）：</b>順序是 B → 我。第 3 回合 B 先暈我，才輪到我 → <b>第 3 回合的卡當場被取消</b>，第 4 回合就能正常行動。<br><br>
+      兩種情況都<b>只損失 1 個行動</b>，差別只在快慢。</div>
+    <div class="note"><b>為什麼這樣定：</b>揭示是同時的，但執行仍有先後順序。若用絕對回合編號來數，同一張暈眩會因為施術者排在前面或後面而效果差一倍。改用「自己的行動機會」之後，一次暈眩永遠只值 1 個行動，跟座位順序無關。</div>
+  </div>
+</section>
+
+<section class="sec" id="s25">
+  <h2><span class="n">25</span>隱遁</h2>
+  <div class="bd">
+    <p>忍者專屬的有利狀態，由「縮地」進入。</p>
+    <ul>
+      <li><span class="kw">無法被敵人指定</span>，不受單體技能的傷害與控制。</li>
+      <li><span class="kw">範圍傷害與範圍控制照常命中</span>，並<span class="kw">解除隱遁</span>。</li>
+      <li>自身除了<span class="kw">發呆</span>與<span class="kw">喝水</span>以外的任何行動，都會解除隱遁。</li>
+      <li>忍者的「斷絕」<span class="kw">只能在隱遁狀態下施展</span>，施展後解除隱遁。</li>
+      <li>打出佔領時，<span class="kw">先解除隱遁再結算佔領</span>——該次佔領和其他人一樣可以被打斷。</li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="s26">
+  <h2><span class="n">26</span>防護的兩個層級</h2>
+  <div class="bd">
+    <p>本遊戲有兩種強度不同的防護，效果不可互換：</p>
+    <div class="scroll"><table>
+      <thead><tr><th style="width:130px"></th><th style="width:130px">防禦（行動卡）</th><th>無敵（騎士 LB「列陣」）</th></tr></thead>
+      <tbody>
+        <tr><th>一般傷害</th><td class="c">免疫</td><td class="c">免疫</td></tr>
+        <tr><th>控制效果</th><td class="c">免疫</td><td class="c">免疫</td></tr>
+        <tr><th>忍者「即死」</th><td class="c"><b>擋不住</b></td><td class="c"><b>擋得住</b></td></tr>
+        <tr><th>武士「秒殺」</th><td class="c"><b>擋不住</b></td><td class="c"><b>擋得住</b></td></tr>
+        <tr><th>保護佔領</th><td class="c">否</td><td class="c">否</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>防禦擋不住即死，代表殘血時不能靠龜著活下來。</b>忍者的斬殺線（50% HP）是無法用防禦迴避的，全場只有騎士的 LB 能救下必死目標。</div>
+  </div>
+</section>
+
+<section class="sec" id="s27">
+  <h2><span class="n">27</span>死亡與重生</h2>
+  <div class="bd">
+    <p>HP ≤ 0 立即死亡，棋子移出戰場。<span class="kw">玩家不會被淘汰</span>，仍屬於原本陣營。死亡角色不可移動、攻擊、使用技能、使用 LB、佔領據點；他該輪尚未揭示的行動卡直接作廢。</p>
+    <p><span class="kw">下一輪開始時立即重生</span>，回到己方出生點，HP 恢復至最大值，清除一般負面狀態。重生本身不消耗行動。</p>
+    <div class="eg"><b>時序：</b>第 2 輪死亡 → <b>第 3 輪開始重生</b>。</div>
+    <div class="note"><b>死亡的代價 ＝ 該輪剩下的回合數。</b>第 1 個回合陣亡等於少打 4 個回合，第 5 個回合陣亡幾乎沒有損失。所以「什麼時候殺掉他」和「有沒有殺掉他」一樣重要。</div>
+    <p>3 人局中，一名玩家的其中一個角色死亡時，只有該角色進入死亡狀態，另一個角色照常行動。</p>
+  </div>
+</section>
+
+<div class="part">第六部　計分與勝負</div>
+
+<section class="sec" id="s28">
+  <h2><span class="n">28</span>計分</h2>
+  <div class="bd">
+    <div class="scroll"><table>
+      <thead><tr><th>來源</th><th style="width:110px">分數</th><th>時機</th></tr></thead>
+      <tbody>
+        <tr><td>外圍控制點 ×3</td><td class="c mono">100 ／個</td><td>每輪結束</td></tr>
+        <tr><td>中層控制點 ×3</td><td class="c mono">150 ／個</td><td>每輪結束</td></tr>
+        <tr><td>中央核心 ×1</td><td class="c mono">250</td><td>每輪結束，人數最多的陣營</td></tr>
+        <tr><td>擊敗敵方角色</td><td class="c mono">100</td><td>立即</td></tr>
+        <tr><td><b>全部拿下</b></td><td class="c mono"><b>1000 ／輪</b></td><td>—</td></tr>
+      </tbody>
+    </table></div>
+    <p>所有分數計入陣營總分。角色死亡<span class="kw">不會</span>從陣營總分扣分。</p>
+    <p>6 個控制點只要歸屬於你就一定計分——沒有爭奪狀態、沒有 0 分的情況，敵人站在上面也照樣計分。要停止對方得分，唯一的方法是成功打出佔領把它搶過來。</p>
+  </div>
+</section>
+
+<section class="sec" id="s29">
+  <h2><span class="n">29</span>勝負判定</h2>
+  <div class="bd">
+    <ul>
+      <li><span class="kw">立即勝利</span>：任一陣營總分達到 <span class="mono">2000</span>，立即獲勝，不需等到該輪結束。</li>
+      <li><span class="kw">五輪結束</span>：第 5 輪結束後若無人達到 2000，總分最高的陣營獲勝。</li>
+    </ul>
+    <h4>平手</h4>
+    <p>若兩個或以上陣營總分相同，依序判定：</p>
+    <ol>
+      <li>控制中的據點數量較多者勝。</li>
+      <li>最後一輪在中央核心得分的陣營勝。</li>
+      <li>擊殺數較多者勝。</li>
+      <li>若以上全部相同，視為平手。</li>
+    </ol>
+  </div>
+</section>
+
+<div class="part">第七部　職業</div>
+
+<section class="sec" id="s30">
+  <h2><span class="n">30</span>六個職業</h2>
+  <div class="bd">
+    <p>每個角色開局選 1 個職業，整場不變。職業不鎖定，可以重複。</p>
+    <div class="scroll"><table>
+      <thead><tr><th>職業</th><th>定位</th><th class="c">HP</th><th class="c">ATK</th><th class="c">單體</th><th class="c">範圍</th><th class="c">MOV</th><th>LB</th><th class="c">獲得</th><th class="c">CD</th></tr></thead>
+      <tbody>
+        <tr><td><b>騎士</b></td><td>坦克</td><td class="c mono">600</td><td class="c mono">150</td><td class="c mono">150</td><td class="c mono">50</td><td class="c mono">2</td><td>列陣</td><td class="c mono">第 3 輪</td><td class="c mono">99</td></tr>
+        <tr><td><b>武士</b></td><td>輸出</td><td class="c mono">550</td><td class="c mono">300</td><td class="c mono">300</td><td class="c mono">200</td><td class="c mono">3</td><td>斬鐵劍</td><td class="c mono">第 4 輪</td><td class="c mono">99</td></tr>
+        <tr><td><b>忍者</b></td><td>收割</td><td class="c mono">500</td><td class="c mono">300</td><td class="c mono">300</td><td class="c mono">200</td><td class="c mono">4</td><td>星遁天誅</td><td class="c mono">第 2 輪</td><td class="c mono">3 輪</td></tr>
+        <tr><td><b>吟遊詩人</b></td><td>輔助</td><td class="c mono">450</td><td class="c mono">200</td><td class="c mono">200</td><td class="c mono">100</td><td class="c mono">4</td><td>英雄的幻想曲</td><td class="c mono">第 2 輪</td><td class="c mono">2 輪</td></tr>
+        <tr><td><b>白魔導士</b></td><td>治療</td><td class="c mono">400</td><td class="c mono">200</td><td class="c mono">200</td><td class="c mono">100</td><td class="c mono">3</td><td>滌罪之心</td><td class="c mono">第 2 輪</td><td class="c mono">2 輪</td></tr>
+        <tr><td><b>黑魔導士</b></td><td>輸出</td><td class="c mono">350</td><td class="c mono">250</td><td class="c mono">250</td><td class="c mono">150</td><td class="c mono">2</td><td>靈魂共鳴</td><td class="c mono">第 2 輪</td><td class="c mono">0（每輪）</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="job">
+      <div class="jh"><span class="jn">騎士</span><span class="jr">坦克</span>
+        <span class="js"><span>HP <b>600</b></span><span>ATK <b>150</b></span><span>MOV <b>2</b></span></span></div>
+      <div class="jb">
+        <div class="sk lb"><span class="tag">LB</span><span class="nm">列陣</span><span class="cd">第 3 輪獲得 · CD 99（一場一次）</span><br>
+          對<b>範圍 1</b> 內所有敵人造成 <b>200</b> 傷害。本回合及接下來 1 個回合進入<b>無敵</b>狀態。無敵可擋下即死與秒殺，但受攻擊一樣會打斷自己的佔領。</div>
+        <div class="sk"><span class="tag">SKLa ×3</span><span class="nm">衛護</span><br>
+          距離 2，位移至目標<b>隊友</b>該格，並<b>替他承受</b>本回合及接下來 1 個回合受到的所有傷害與控制。即便攻擊被轉移，目標被攻擊依然會打斷其佔領行動。騎士在承受期間死亡時，轉移立即停止。</div>
+        <div class="sk"><span class="tag">SKLb ×3</span><span class="nm">調停</span><br>
+          距離 2，<b>恢復自身 50 HP</b>，位移至目標<b>敵人</b>該格，造成單體傷害（150），並<b>暈眩</b> 1 個回合。</div>
+      </div>
+      <div class="jn2"><b>設計要點：</b>全場血量最高，又是唯一有無敵與傷害轉移的職業。「衛護 ＋ 防禦」或「衛護 ＋ 無敵」可以讓兩個人都不受傷，這是刻意保留的組合。前期投入太多資源集火騎士，可能被他的防禦拆火——管也不是、不管也不是，就是騎士的心理博弈。</div>
+    </div>
+
+    <div class="job">
+      <div class="jh"><span class="jn">武士</span><span class="jr">輸出</span>
+        <span class="js"><span>HP <b>550</b></span><span>ATK <b>300</b></span><span>MOV <b>3</b></span></span></div>
+      <div class="jb">
+        <div class="sk lb"><span class="tag">LB</span><span class="nm">斬鐵劍</span><span class="cd">第 4 輪獲得 · CD 99（一場一次）</span><br>
+          距離 3，位移到該格。途經連線上的敵人若<b>上一個回合或本回合攻擊過自身</b>，則直接<b>秒殺</b>。</div>
+        <div class="sk"><span class="tag">SKLa ×3</span><span class="nm">冰天</span><br>
+          距離 2，位移至目標敵人該格，對<b>範圍 1</b> 內所有敵人造成範圍傷害（200），並造成<b>鎖足</b>。</div>
+        <div class="sk"><span class="tag">SKLb ×3</span><span class="nm">天道雪月花</span><br>
+          距離 <b>0</b>，對單體目標造成單體傷害（300）。</div>
+      </div>
+      <div class="jn2"><b>設計要點：</b>全場最高的單體傷害。斬鐵劍讓敵人忌憚攻擊武士——不攻擊他，他就能為所欲為；攻擊他，就可能被反殺。缺點是時機晚：沒有詩人輔助只能第 4 輪之後才開斬。</div>
+    </div>
+
+    <div class="job">
+      <div class="jh"><span class="jn">忍者</span><span class="jr">收割</span>
+        <span class="js"><span>HP <b>500</b></span><span>ATK <b>300</b></span><span>MOV <b>4</b></span></span></div>
+      <div class="jb">
+        <div class="sk lb"><span class="tag">LB</span><span class="nm">星遁天誅</span><span class="cd">第 2 輪獲得 · CD 3 輪</span><br>
+          距離 2，位移到該格。<br>
+          · 目標 HP <b>低於 50%</b> → 直接<b>斬殺</b>，並在該回合<b>突破行動限制</b>：停在被斬者原本那一格，從該格重新起算距離 2，可以再跳一次、再斬一次。每一跳都必須符合距離 2。沒有次數上限，邊界是「距離 2 內還有沒有殘血目標」。<br>
+          · 目標 HP <b>未低於 50%</b> → 造成 <b>200</b> 傷害，<b>不觸發連鎖</b>。<br>
+          整串連鎖算一個回合的一張卡。</div>
+        <div class="sk"><span class="tag">SKLa ×3</span><span class="nm">縮地</span><br>
+          距離 4，位移至該格，並進入<b>隱遁</b>狀態（§25）。</div>
+        <div class="sk"><span class="tag">SKLb ×3</span><span class="nm">斷絕</span><br>
+          距離 1，<b>隱遁狀態下方可施展</b>。對目標造成單體傷害（300），並解除自身隱遁。</div>
+      </div>
+      <div class="jn2"><b>設計要點：</b>靠隱遁貼近、找機會收割殘血。連鎖的代價是每跳一次就更深入敵陣，結束時停在最後一個被斬者的位置——通常是敵方人堆中央，下一個回合會非常危險。</div>
+    </div>
+
+    <div class="job">
+      <div class="jh"><span class="jn">吟遊詩人</span><span class="jr">輔助</span>
+        <span class="js"><span>HP <b>450</b></span><span>ATK <b>200</b></span><span>MOV <b>4</b></span></span></div>
+      <div class="jb">
+        <div class="sk lb"><span class="tag">LB</span><span class="nm">英雄的幻想曲</span><span class="cd">第 2 輪獲得 · CD 2 輪</span><br>
+          指定<b>任意距離</b>的一名隊友，使其<b>立即獲得 LB</b>（包含重置 CD 99、以及提前給出尚未到獲得輪次的 LB）。自身與該名隊友本回合及下一個回合<b>免疫控制</b>並<b>減傷 50%</b>。</div>
+        <div class="sk"><span class="tag">SKLa ×3</span><span class="nm">爆破箭</span><br>
+          距離 3，對該格造成範圍傷害（100），並<b>擊退</b>一格。</div>
+        <div class="sk"><span class="tag">SKLb ×3</span><span class="nm">默者的夜曲</span><br>
+          距離 3，對目標造成單體傷害（200），並<b>沉默</b> 1 個回合。</div>
+      </div>
+      <div class="jn2"><b>設計要點：</b>全場唯一能改變 LB 時程的角色。爆破箭可以把敵人從據點上推走，不用擊殺就解除威脅。要注意隊友必須事先把 LB 卡排在對的回合，才接得住詩人的加速——這是需要兩個人套好的配合，詩人先死就會落空。</div>
+    </div>
+
+    <div class="job">
+      <div class="jh"><span class="jn">白魔導士</span><span class="jr">治療</span>
+        <span class="js"><span>HP <b>400</b></span><span>ATK <b>200</b></span><span>MOV <b>3</b></span></span></div>
+      <div class="jb">
+        <div class="sk lb"><span class="tag">LB</span><span class="nm">滌罪之心</span><span class="cd">第 2 輪獲得 · CD 2 輪</span><br>
+          距離 5，對自身與該格連線上的所有敵人造成 <b>250</b> 傷害，並<b>暈眩</b> 1 個回合。</div>
+        <div class="sk"><span class="tag">SKLa ×3</span><span class="nm">自然的奇蹟</span><br>
+          距離 3，造成單體傷害（200），並將目標<b>變身</b>成小動物 1 個回合。</div>
+        <div class="sk"><span class="tag">SKLb ×3</span><span class="nm">大療傷</span><br>
+          距離 3，使自身或目標恢復 <b>150</b> HP，並賦予 <b>100</b> 護盾。本技能產生的護盾<b>不可疊加</b>。</div>
+      </div>
+      <div class="jn2"><b>設計要點：</b>攻擊距離很遠的輸出，同時具備治療與護盾，幾乎可以和所有職業配合。LB 的大範圍暈眩加傷害，可以配合任何輸出角色的單體技能抓死目標。</div>
+    </div>
+
+    <div class="job">
+      <div class="jh"><span class="jn">黑魔導士</span><span class="jr">輸出</span>
+        <span class="js"><span>HP <b>350</b></span><span>ATK <b>250</b></span><span>MOV <b>2</b></span></span></div>
+      <div class="jb">
+        <div class="sk lb"><span class="tag">LB</span><span class="nm">靈魂共鳴</span><span class="cd">第 2 輪獲得 · CD 0（每輪可用）</span><br>
+          <b>該輪剩餘期間持續有效</b>：自身的<b>單體</b>技能距離 <b>+2</b>、傷害 <b>+100</b>，並改為對目標格上所有敵人造成範圍傷害。</div>
+        <div class="sk"><span class="tag">SKLa ×3</span><span class="nm">火焰</span><br>
+          距離 3，造成單體傷害（250）。開 LB 後變成<b>距離 5 · 範圍 · 350</b>。</div>
+        <div class="sk"><span class="tag">SKLb ×3</span><span class="nm">磁暴</span><br>
+          距離 <b>0</b>，對該格造成範圍傷害（150），並使自身獲得 <b>250</b> 護盾。</div>
+      </div>
+      <div class="jn2"><b>設計要點：</b>超遠程、超脆皮的砲塔。LB 只加成單體技能，所以火焰吃加成、磁暴不吃。磁暴是最後一道防線——距離 0 表示敵人已經貼到臉上了。難點在保命與找輸出位置，而不是無腦開炮。</div>
+    </div>
+
+    <div class="note"><b>六個 LB 的動詞完全不重複：</b>騎士＝自保、武士＝反擊處決、忍者＝連鎖收割、詩人＝使能、白魔導士＝直線爆發加控制、黑魔導士＝自我強化。十二個技能中，只有「火焰」是純傷害沒有附加效果——它靠 LB 的加成撐起存在感。</div>
+  </div>
+</section>
+
+<div class="part">附錄</div>
+
+<section class="sec" id="a">
+  <h2><span class="n">A</span>結算速查</h2>
+  <div class="bd">
+    <h4>一輪</h4>
+    <ol class="seq">
+      <li><b>輪開始</b> — 重生 → 更新 LB → 決定行動順序</li>
+      <li><b>編程</b> — 秘密排 5 張卡，不可更改</li>
+      <li><b>第 1～5 回合</b> — 逐回合結算</li>
+      <li><b>輪結束</b> — 據點計分 → 核心計分 → 清除持續效果 → 收回全部行動卡 → 檢查 2000 分</li>
+    </ol>
+    <h4>一回合</h4>
+    <ol class="seq">
+      <li>同時揭示該回合的卡</li>
+      <li>喝水立即結算（不依順序）</li>
+      <li>依行動順序執行其餘的卡（佔領此時只宣告）</li>
+      <li>結算佔領：檢查是否被命中或受控 → 分組 → 多陣營全失敗 → 單陣營取得</li>
+      <li>進入下一個回合</li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" id="b">
+  <h2><span class="n">B</span>名詞索引</h2>
+  <div class="bd">
+    <dl class="gloss">
+      <dt>場 / 輪 / 回合</dt><dd>一場 ＝ 5 輪；一輪 ＝ 5 回合；一回合 ＝ 每人打出 1 張行動卡。</dd>
+      <dt>距離 N</dt><dd>可指定最短步數 ≤ N 的格。距離 0 ＝ 自己所在的格。</dd>
+      <dt>範圍 N</dt><dd>效果及於最短步數 ≤ N 的所有格。範圍 1 ＝ 中心格＋所有相鄰格。</dd>
+      <dt>單體傷害</dt><dd>＝ 該角色的 ATK。</dd>
+      <dt>範圍傷害</dt><dd>＝ 該角色的 ATK − 100。</dd>
+      <dt>佔領</dt><dd>唯一能改變據點歸屬的行動。該回合被任何攻擊或控制碰到就失敗。</dd>
+      <dt>防禦</dt><dd>行動卡。免疫傷害與控制，需以發呆維持，擋不住即死與秒殺，不保護佔領，不跨輪。</dd>
+      <dt>無敵</dt><dd>騎士 LB「列陣」給予。比防禦強一級，擋得住即死與秒殺，但同樣不保護佔領。</dd>
+      <dt>隱遁</dt><dd>忍者狀態。免疫單體指定，範圍技能可命中並解除；除發呆與喝水外任何行動都會解除。</dd>
+      <dt>暈眩</dt><dd>無法進行任何行動。</dd>
+      <dt>沉默 / 變身</dt><dd>無法使用 LB 與角色技能，其餘照常。兩者效果相同。</dd>
+      <dt>鎖足</dt><dd>無法移動；帶位移的技能只能在原地使用。</dd>
+      <dt>擊退</dt><dd>使目標朝相對方向移動一格。</dd>
+      <dt>LB 獲得輪次</dt><dd>該職業第幾輪自動取得 LB，與傷害擊殺無關。</dd>
+      <dt>CD</dt><dd>使用的那一輪 ＋ CD ＝ 下次獲得的輪次。CD 99 ＝ 一場一次；CD 0 ＝ 每輪可用。</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="sec" id="c">
+  <h2><span class="n">C</span>指示物清單</h2>
+  <div class="bd">
+    <div class="scroll"><table>
+      <thead><tr><th style="width:120px">指示物</th><th style="width:90px">放在哪</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td><b>攻擊過武士</b></td><td>攻擊者身上</td><td>斬鐵劍判定「上一個回合<b>或</b>本回合」，所以要能分辨是哪一個回合放的——建議兩種顏色或可翻面</td></tr>
+        <tr><td><b>暈眩</b></td><td>被控者</td><td>無法進行任何行動</td></tr>
+        <tr><td><b>沉默／變身</b></td><td>被控者</td><td>無法使用技能與 LB</td></tr>
+        <tr><td><b>鎖足</b></td><td>被控者</td><td>無法移動</td></tr>
+        <tr><td><b>減傷 50%</b></td><td>受益者</td><td>詩人 LB，兩個人各一個</td></tr>
+        <tr><td><b>衛護中</b></td><td>被保護者</td><td>要能看出是誰在保護他——建議用陣營色或連結標記</td></tr>
+        <tr><td><b>防禦</b>／<b>無敵</b></td><td>該角色</td><td><b>必須是兩種不同的指示物</b>，兩者擋的東西不同（§26）</td></tr>
+        <tr><td><b>隱遁</b></td><td>忍者</td><td>免疫單體指定</td></tr>
+        <tr><td><b>護盾</b></td><td>該角色</td><td>白魔導士 100（不可疊加）、黑魔導士自身 250</td></tr>
+        <tr><td><b>LB 狀態</b></td><td>角色卡</td><td>未獲得／可用／冷卻中第 N 輪。因為詩人可以重置，必須是可變動的，不能只印在卡面</td></tr>
+        <tr><td><b>據點歸屬</b></td><td>控制點</td><td>三色，永久保留直到被成功佔領</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section class="sec open" id="d">
+  <h2><span class="n">D</span>尚未定案</h2>
+  <div class="bd">
+    <p>以下項目尚未拍板，不影響其餘規則的完整性，但實際試玩前需要補上。</p>
+    <div class="olist">
+      <div class="r"><div class="n2">1</div><div><b>地圖改版與軸線系統</b><span>白魔導士與武士的 LB 都沿「連線」作用，擊退也需要方向定義。目前的地圖沒有明確的軸線，需要重畫並標出直線軸。地圖的三個外邊（出生點—普通—外圍據點—普通—出生點）本身已經是幾何直線，可以直接當軸線用；內圈目前一條都沒有。</span></div></div>
+      <div class="r"><div class="n2">2</div><div><b>移動的張數與地圖尺度</b><span>3 張移動卡 × MOV 3～4 ＝ 一輪最多跑 9～12 格，但地圖最遠兩格只有 6 格。位置與距離會失去意義。選項：移動改 2 張、下修 MOV、或放大地圖。</span></div></div>
+      <div class="r"><div class="n2">3</div><div><b>傷害要不要改成整個回合同時結算</b><span>目前依行動順序結算，順序靠前的角色可以在對方行動前把他打死，直接刪掉對方那個回合的卡。喝水與佔領已經是同時結算，改了會讓系統一致。</span></div></div>
+      <div class="r"><div class="n2">4</div><div><b>詩人能不能讓「已用掉的一次性 LB」再開一次</b><span>已確認詩人可以重置 CD 99、也可以提前給出未到輪次的 LB，但這一種情況還沒界定。</span></div></div>
+      <div class="r"><div class="n2">5</div><div><b>擊退的邊界</b><span>若相對方向沒有連線（角色已在角落）會怎樣？</span></div></div>
+      <div class="r"><div class="n2">6</div><div><b>SKLa／SKLb 的語意要不要跨職業一致</b><span>技能卡是公版，翻出「SKLa」目前沒有資訊量。若把騎士的兩招對調，六個職業就都會變成「SKLa ＝ 對敵招」，翻出 SKLa 就等於宣告他要打人。</span></div></div>
+      <div class="r"><div class="n2">7</div><div><b>各角色的職業是否公開</b><span>若公開，索引卡就能完全解決公版卡的可讀性；若不公開，讀牌會變成另一種遊戲。</span></div></div>
+      <div class="r"><div class="n2">8</div><div><b>移動能不能穿過敵人</b><span>敵人有沒有阻擋效果？</span></div></div>
+      <div class="r"><div class="n2">9</div><div><b>敵人能不能進入對方出生點</b><span>能的話可不可以蹲點攻擊剛重生的角色？</span></div></div>
+      <div class="r"><div class="n2">10</div><div><b>暈眩取消掉的卡是棄掉還是收回</b><span>同一輪內能不能重排？</span></div></div>
+      <div class="r"><div class="n2">11</div><div><b>要不要保留機會／命運場景卡</b><span>每輪翻一張改變當輪戰場條件。留著增加變化，刪掉減少規則量。</span></div></div>
+    </div>
+  </div>
+</section>
+
+    </main>
+  </div>
+</div>
