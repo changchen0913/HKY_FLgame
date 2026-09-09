@@ -264,6 +264,7 @@ td.c{text-align:center}
       <li><span class="kw">角色卡</span> ×6 — 每個職業一張，正面印 HP／ATK／MOV，背面印該職業的兩個技能與 LB。</li>
       <li><span class="kw">行動卡</span> — 每位角色一套 19 張（見 §14）。所有角色的行動卡是<span class="kw">同一種公版設計</span>，技能卡只印「SKLa」「SKLb」，實際效果看角色卡背面。</li>
       <li><span class="kw">職業索引卡</span> — 雙面，列出全部 6 個職業的 2 技能與 LB，每位玩家一張。因為技能卡是公版，這張是判讀對手的依據。</li>
+      <li><span class="kw">量尺</span> ×1 — 透明長條，用來判定哪些格在同一條直線上（§22）。任何人都可以拿起來放到地圖上，判定過程全桌可見。</li>
       <li><span class="kw">據點歸屬標記</span> — 三色，放在 6 個控制點上。</li>
       <li><span class="kw">狀態指示物</span> — 見附錄 C。</li>
       <li><span class="kw">計分軌</span> — 三條，0～2000。</li>
@@ -547,6 +548,17 @@ td.c{text-align:center}
     <p><span class="kw">範圍的中心：</span>技能若指定目標格，以目標格為中心；若沒有指定目標，以施術者自己為中心。</p>
     <p>敵我角色<span class="kw">可以站在同一格</span>。同一格上可以有任意數量的角色。</p>
     <div class="note"><b>地圖的連線密度就是平衡槓桿。</b>範圍 1 會打到幾格，取決於中心那一格連出去幾條線。現有地圖上，出生點連 2 條（範圍 1 ＝ 3 格）、外圍控制點與中央核心連 3 條（4 格）、三個中層要塞與內圈三格連 4 條（<b>5 格</b>）。價值 150 的中層要塞剛好是全圖最容易被範圍技掃到的位置。</div>
+
+    <h4>直線效果與量尺</h4>
+    <p>部分效果沿<span class="kw">直線</span>作用——白魔導士的「滌罪之心」、武士的「斬鐵劍」，以及所有的擊退。</p>
+    <p>直線<span class="kw">不是用步數推算的，而是實際的幾何直線</span>：把<span class="kw">量尺</span>放在地圖上，從起點連到終點，<span class="kw">中心點被量尺覆蓋的格子就在直線上</span>。起點與終點本身也算在直線上。</p>
+    <ul>
+      <li>量尺是透明的，任何人都可以拿起來擺，<span class="kw">判定過程全桌可見</span>，不會有各說各話的情況。</li>
+      <li><span class="kw">距離仍然用步數計算。</span>量尺只回答「直線上有誰」，不回答「構不構得到」——能不能指定那一格，還是看距離（§22 開頭）。這兩件事分開，不要混用。</li>
+      <li><span class="kw">擊退</span>也用量尺：把尺放在「攻擊者 → 目標」上，目標沿這條線的延長方向推到下一格。</li>
+    </ul>
+    <div class="note"><b>所以地圖是刻意做成非均質的。</b>兩個離你步數相同的格子，可能一個在直線上、一個不在——<b>往旁邊偏一格</b>就能閃掉整條線，也可能因此讓自己站進另一條線。這是走位的核心判斷之一，也是地圖排版必須仔細設計的原因：19 個格子放在哪裡，決定了哪些位置會共線。</div>
+    <div class="eg"><b>用詞區分：</b>「<b>連線</b>」指地圖上格與格之間相鄰的那條線，用於移動與計算距離。「<b>直線</b>」指量尺拉出來的幾何直線，用於上述的直線效果。兩者不同。</div>
   </div>
 </section>
 
@@ -570,7 +582,7 @@ td.c{text-align:center}
         <tr><td><b>沉默</b></td><td>無法使用 <b>LB 技能與角色技能</b>。移動、喝水、防禦、佔領仍可正常進行</td></tr>
         <tr><td><b>變身</b></td><td>無法使用 <b>LB 技能與角色技能</b>。效果與沉默完全相同，兩個名詞是刻意保留的</td></tr>
         <tr><td><b>鎖足</b></td><td><b>無法移動</b>；帶位移的技能<b>只能在原地使用</b>——技能本身照常生效，只是不會位移</td></tr>
-        <tr><td><b>擊退</b></td><td>使目標朝<b>相對方向移動一格</b>。可以把敵人從據點上推走</td></tr>
+        <tr><td><b>擊退</b></td><td>把量尺放在「攻擊者 → 目標」上，目標沿這條直線的<b>延長方向推到下一格</b>（§22）。可以把敵人從據點上推走</td></tr>
       </tbody>
     </table></div>
     <p>控制效果即使不造成傷害，<span class="kw">也能打斷佔領</span>（§19）。</p>
@@ -701,7 +713,7 @@ td.c{text-align:center}
         <span class="js"><span>HP <b>550</b></span><span>ATK <b>300</b></span><span>MOV <b>3</b></span></span></div>
       <div class="jb">
         <div class="sk lb"><span class="tag">LB</span><span class="nm">斬鐵劍</span><span class="cd">第 4 輪獲得 · CD 99（一場一次）</span><br>
-          距離 3，位移到該格。途經連線上的敵人若<b>上一個回合或本回合攻擊過自身</b>，則直接<b>秒殺</b>。</div>
+          距離 3，位移到該格。途經<b>直線</b>上的敵人若<b>上一個回合或本回合攻擊過自身</b>，則直接<b>秒殺</b>。</div>
         <div class="sk"><span class="tag">SKLa ×3</span><span class="nm">冰天</span><br>
           距離 2，位移至目標敵人該格，對<b>範圍 1</b> 內所有敵人造成範圍傷害（200），並造成<b>鎖足</b>。</div>
         <div class="sk"><span class="tag">SKLb ×3</span><span class="nm">天道雪月花</span><br>
@@ -747,7 +759,7 @@ td.c{text-align:center}
         <span class="js"><span>HP <b>400</b></span><span>ATK <b>200</b></span><span>MOV <b>3</b></span></span></div>
       <div class="jb">
         <div class="sk lb"><span class="tag">LB</span><span class="nm">滌罪之心</span><span class="cd">第 2 輪獲得 · CD 2 輪</span><br>
-          距離 5，對自身與該格連線上的所有敵人造成 <b>250</b> 傷害，並<b>暈眩</b> 1 個回合。</div>
+          距離 5，對自身與該格<b>直線</b>上的所有敵人造成 <b>250</b> 傷害，並<b>暈眩</b> 1 個回合。</div>
         <div class="sk"><span class="tag">SKLa ×3</span><span class="nm">自然的奇蹟</span><br>
           距離 3，造成單體傷害（200），並將目標<b>變身</b>成小動物 1 個回合。</div>
         <div class="sk"><span class="tag">SKLb ×3</span><span class="nm">大療傷</span><br>
@@ -813,7 +825,7 @@ td.c{text-align:center}
       <dt>暈眩</dt><dd>無法進行任何行動。</dd>
       <dt>沉默 / 變身</dt><dd>無法使用 LB 與角色技能，其餘照常。兩者效果相同。</dd>
       <dt>鎖足</dt><dd>無法移動；帶位移的技能只能在原地使用。</dd>
-      <dt>擊退</dt><dd>使目標朝相對方向移動一格。</dd>
+      <dt>擊退</dt><dd>沿「攻擊者 → 目標」的直線延長方向，把目標推到下一格。</dd><dt>直線</dt><dd>用量尺拉出的幾何直線，中心點被尺覆蓋的格子即在線上。與「連線」（地圖上的相鄰邊）不同。</dd><dt>量尺</dt><dd>透明長條配件，判定哪些格共線用，全桌可見。</dd>
       <dt>LB 獲得輪次</dt><dd>該職業第幾輪自動取得 LB，與傷害擊殺無關。</dd>
       <dt>CD</dt><dd>使用的那一輪 ＋ CD ＝ 下次獲得的輪次。CD 99 ＝ 一場一次；CD 0 ＝ 每輪可用。</dd>
     </dl>
@@ -847,11 +859,11 @@ td.c{text-align:center}
   <div class="bd">
     <p>以下項目尚未拍板，不影響其餘規則的完整性，但實際試玩前需要補上。</p>
     <div class="olist">
-      <div class="r"><div class="n2">1</div><div><b>地圖改版與軸線系統</b><span>白魔導士與武士的 LB 都沿「連線」作用，擊退也需要方向定義。目前的地圖沒有明確的軸線，需要重畫並標出直線軸。地圖的三個外邊（出生點—普通—外圍據點—普通—出生點）本身已經是幾何直線，可以直接當軸線用；內圈目前一條都沒有。</span></div></div>
+      <div class="r"><div class="n2">1</div><div><b>地圖排版</b><span>直線效果改用量尺實際量測（§22），所以不需要在地圖上預先印軸線——但 19 個格子擺在哪裡，就決定了哪些位置會共線。地圖必須刻意排版，讓「往旁邊偏一格就閃掉整條線」這件事真的成立，同時避免出現一條線串過太多格的爆炸組合。現有的三個外邊已經是直的（各 5 格），內圈的排列需要重新設計。</span></div></div>
       <div class="r"><div class="n2">2</div><div><b>移動的張數與地圖尺度</b><span>3 張移動卡 × MOV 3～4 ＝ 一輪最多跑 9～12 格，但地圖最遠兩格只有 6 格。位置與距離會失去意義。選項：移動改 2 張、下修 MOV、或放大地圖。</span></div></div>
       <div class="r"><div class="n2">3</div><div><b>傷害要不要改成整個回合同時結算</b><span>目前依行動順序結算，順序靠前的角色可以在對方行動前把他打死，直接刪掉對方那個回合的卡。喝水與佔領已經是同時結算，改了會讓系統一致。</span></div></div>
       <div class="r"><div class="n2">4</div><div><b>詩人能不能讓「已用掉的一次性 LB」再開一次</b><span>已確認詩人可以重置 CD 99、也可以提前給出未到輪次的 LB，但這一種情況還沒界定。</span></div></div>
-      <div class="r"><div class="n2">5</div><div><b>擊退的邊界</b><span>若相對方向沒有連線（角色已在角落）會怎樣？</span></div></div>
+      <div class="r"><div class="n2">5</div><div><b>量尺的細節</b><span>（a）延長方向上沒有格子時，擊退會怎樣——不動，還是無效？（b）中心點剛好壓在量尺邊緣算不算？建議在每一格印一個明確的中心點，並規定「中心點被覆蓋」才算，避免爭議。（c）直線會不會被中間的角色擋住（視線）？</span></div></div>
       <div class="r"><div class="n2">6</div><div><b>SKLa／SKLb 的語意要不要跨職業一致</b><span>技能卡是公版，翻出「SKLa」目前沒有資訊量。若把騎士的兩招對調，六個職業就都會變成「SKLa ＝ 對敵招」，翻出 SKLa 就等於宣告他要打人。</span></div></div>
       <div class="r"><div class="n2">7</div><div><b>各角色的職業是否公開</b><span>若公開，索引卡就能完全解決公版卡的可讀性；若不公開，讀牌會變成另一種遊戲。</span></div></div>
       <div class="r"><div class="n2">8</div><div><b>移動能不能穿過敵人</b><span>敵人有沒有阻擋效果？</span></div></div>
