@@ -6,13 +6,17 @@
 
 以 FINAL FANTASY XIV 的 Frontline 大規模 PvP 為靈感。
 
+![六職業總覽](job-overview.png)
+
 ## 檔案
 
 | 檔案 | 說明 |
 |---|---|
 | `rulebook.html` | 完整規則書 V4，用瀏覽器開啟即可 |
+| `job-overview.png` | 六職業總覽圖（上圖） |
 | `job-editor.html` | 職業資料編輯器，附即時平衡速查 |
 | `jobs-backup.json` | 六個職業的資料備份 |
+| `resourse/` | 技能圖示等素材 |
 
 ## 狀態
 
