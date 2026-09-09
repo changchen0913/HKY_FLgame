@@ -16,7 +16,7 @@
 | `job-overview.png` | 六職業總覽圖（上圖） |
 | `job-editor.html` | 職業資料編輯器，附即時平衡速查 |
 | `jobs-backup.json` | 六個職業的資料備份 |
-| `resourse/` | 技能圖示等素材 |
+| `resources/` | 職業與技能圖示，依職業分資料夾（各 4 張：職業頭像＋2 技能＋LB） |
 
 ## 狀態
 
